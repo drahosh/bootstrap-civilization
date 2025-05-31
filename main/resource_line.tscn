@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkswtgd48uyo8"]
+
+[ext_resource type="Script" uid="uid://bphb41c2drc4i" path="res://main/resource_line.gd" id="1_ovccb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_adloa"]
+
+[node name="Control" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 1.00478)
+script = ExtResource("1_ovccb")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResourceName" type="Label" parent="CenterContainer"]
+clip_contents = true
+layout_mode = 2
+text = "testing testing"
+label_settings = SubResource("LabelSettings_adloa")
+
+[node name="CenterContainer2" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResourceAmount" type="Label" parent="CenterContainer2"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "123456.789
+"
+
+[node name="CenterContainer3" type="CenterContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResourceChange" type="Label" parent="CenterContainer3"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.756863, 0, 1)
+text = "+37.2
+"

@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=3 uid="uid://cst3g3vc6wv6u"]
+
+[ext_resource type="Script" uid="uid://c7wwdnwc6cbci" path="res://jobs/job.gd" id="1_7ixr7"]
+
+[node name="Job" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("1_7ixr7")
+
+[node name="Padding" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Padding" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="MainLabel" type="RichTextLabel" parent="Panel/VBoxContainer/HBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "gathering
+work: 0
+max:  100"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="padding2" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label2" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "use:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+text = "100"
+alignment = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "%"
+vertical_alignment = 1
+
+[node name="padding3" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="buy_box" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="UpgradeLabel" type="Label" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
+layout_mode = 2
+text = "1"
+horizontal_alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
+layout_mode = 2
+disabled = true
+text = "Expand
+"
+
+[node name="padding4" type="Control" parent="Panel/VBoxContainer/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="workforce percentage" type="ProgressBar" parent="Panel/VBoxContainer"]
+show_behind_parent = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+rounded = true
+show_percentage = false
+
+[node name="padding2" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
