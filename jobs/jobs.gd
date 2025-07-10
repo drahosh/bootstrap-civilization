@@ -30,3 +30,27 @@ func tick():
 		job.workforce_current = used_workforce
 		job.tick()
 		remaining_workforce -= used_workforce
+
+
+func save_game():
+	var save_dict = {}
+	var children = get_children()
+	for i in range(children.size()):
+		# saving them under their order number to keep their order in queue
+		save_dict[i] = children[i].save_game()
+	return save_dict
+
+
+func load_game(data_dict):
+	for child in get_children():
+		child.free()
+	for i in range(data_dict.size()):
+		var line = job_line.instantiate()
+		line.load_game(data_dict[str(i)])  # file is converted to str json, we need to get it by float
+		self.add_child(line)
+
+
+func reset():
+	for child in get_children():
+		child.free()
+	_setup()

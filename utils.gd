@@ -2,6 +2,8 @@ extends RefCounted
 
 class_name Utils
 
+signal active_resource_change  # calledd when something the player does (so not tick) changes resource amounts
+
 
 static func simulate_random_events(number, probability):
 	# if event can happen number times with probability chance, this function returns how many times it happens

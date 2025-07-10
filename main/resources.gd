@@ -8,13 +8,11 @@ var enabled_resources = []  # list of resources shown in UI
 
 
 func _setup():
-	#TODO loading
-	#If not state or save file, set defaults
 	enabled_resources = [
 		Enums.resource_types.FOOD,
 		Enums.resource_types.MATERIALS,
 		Enums.resource_types.TEXTILES,
-		Enums.resource_types.TOOLS
+		Enums.resource_types.TOOLS,
 	]
 	Resources.resources = {
 		Enums.resource_types.FOOD: 500,
@@ -25,10 +23,13 @@ func _setup():
 	}
 	for key in Enums.resource_types.values():
 		Resources.resource_changes[key] = 0
+	redraw_resource_list()
 
 
 #Makes list of resources, redrawn on ready and when resource is added
 func redraw_resource_list():
+	for child in get_children():
+		child.free()
 	for resource in enabled_resources:
 		var line: Resource_line = resource_line.instantiate() as Resource_line
 
@@ -41,13 +42,12 @@ func redraw_resource_list():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self._setup()
-	self.redraw_resource_list()
+	_setup()
 
 
 func tick():
 	#zero resource changes
-	for line in self.get_children():
+	for line in get_children():
 		line.redraw()
 	for key in Enums.resource_types.values():
 		Resources.resource_changes[key] = 0
@@ -67,3 +67,29 @@ static func change_resources(to_change: Dictionary, negative: bool = false, time
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func save_game():
+	return {
+		"resources": resources,
+		"resource_changes": resource_changes,
+		"enabled_resources": enabled_resources,
+	}
+
+
+func load_game(dict):
+	# need to parse types from enums as ints instead of floats
+	resources = {}
+	for key in dict["resources"]:
+		resources[int(key)] = dict["resources"][key]
+	resource_changes = {}
+	for key in dict["resource_changes"]:
+		resource_changes[int(key)] = dict["resource_changes"][key]
+	enabled_resources = []
+	for value in dict["enabled_resources"]:
+		enabled_resources.append(int(value))
+	redraw_resource_list()
+
+
+func reset():
+	_setup()

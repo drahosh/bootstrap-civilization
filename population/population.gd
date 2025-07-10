@@ -48,7 +48,7 @@ func add_death_rate():
 func recalculate_death_rates():
 	# called after upgrade changing death rate stats
 	death_rates = []
-	death_rates.append(0.3)
+	death_rates.append(zero_death_rate)
 	for i in range(1, 18):
 		death_rates.append(0.03)
 	for i in range(18, elder_cutoff):
@@ -205,3 +205,59 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func save_game():
+	return {
+		"max_age": max_age,
+		"population_male": population_male,
+		"population_female": population_female,
+		"workforce_total": workforce_total,
+		"population_change": population_change,
+		"workforce_change": workforce_change,
+		"zero_death_rate": zero_death_rate,
+		"juvenile_death_rate": juvenile_death_rate,
+		"adult_death_rate": adult_death_rate,
+		"elder_cutoff": elder_cutoff,
+		"age_death_rate_exponential": age_death_rate_exponential,
+		"adult_birth_rate": adult_birth_rate,
+		"age_birth_rate_exponential": age_birth_rate_exponential,
+		"female_birth_influence": female_birth_influence,
+		"adult_work_rate": adult_work_rate,
+		"female_work_multiplier": female_work_multiplier,
+		"male_work_multiplier": male_work_multiplier,
+		"old_work_exponential": old_work_exponential,
+		"young_work_exponential": young_work_exponential,
+		"start_working_age": start_working_age,
+	}
+
+
+func load_game(data_dict):
+	max_age = data_dict["max_age"]
+	population_male = data_dict["population_male"]
+	population_female = data_dict["population_female"]
+	workforce_total = data_dict["workforce_total"]
+	population_change = data_dict["population_change"]
+	workforce_change = data_dict["workforce_change"]
+	zero_death_rate = data_dict["zero_death_rate"]
+	juvenile_death_rate = data_dict["juvenile_death_rate"]
+	adult_death_rate = data_dict["adult_death_rate"]
+	elder_cutoff = data_dict["elder_cutoff"]
+	age_death_rate_exponential = data_dict["age_death_rate_exponential"]
+	adult_birth_rate = data_dict["adult_birth_rate"]
+	age_birth_rate_exponential = data_dict["age_birth_rate_exponential"]
+	female_birth_influence = data_dict["female_birth_influence"]
+	adult_work_rate = data_dict["adult_work_rate"]
+	female_work_multiplier = data_dict["female_work_multiplier"]
+	male_work_multiplier = data_dict["male_work_multiplier"]
+	old_work_exponential = data_dict["old_work_exponential"]
+	young_work_exponential = data_dict["young_work_exponential"]
+	start_working_age = data_dict["start_working_age"]
+	recalculate_birth_rates()
+	recalculate_death_rates()
+	recalculate_work_rates()
+	_redraw_ui()
+
+
+func reset():
+	_ready()

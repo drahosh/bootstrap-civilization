@@ -7,11 +7,10 @@ var workforce_current: int
 var workforce_limit_percentage: int
 var description: String
 var base_upgrade_costs: Dictionary
-var upgraded_number: int = 0  #todo IMPLEMENT
-var upgrade_cost_scale: float = 1.2  # todo implement
-var job_requirements: Dictionary  # resource to amount consumed per workforce
-var output: Dictionary  # resource to amount produced per workforce
-var input: Dictionary  # resources needed per workforce to produce
+var upgraded_number: int
+var upgrade_cost_scale: float
+var output: Dictionary  # resource amount produced per workforce
+var input: Dictionary  # resources spent per workforce to produce
 
 
 # Called when the node enterss the scene tree for the first time.
@@ -60,12 +59,14 @@ func upgrade(times = 1):
 	self.redraw()
 
 
+func _set_button_clickbility():
+	$Panel/VBoxContainer/HBoxContainer/buy_box/UpgradeButton.disabled = not _can_afford_upgrade()
+
+
 func redraw():
 	_update_main_description()
-	get_node("Panel/VBoxContainer/HBoxContainer/buy_box/UpgradeButton").disabled = not _can_afford_upgrade()
-	get_node("Panel/VBoxContainer/workforce percentage").value = (
-		float(self.workforce_current) * 100 / self.workforce_max
-	)
+	_set_button_clickbility()
+	$"Panel/VBoxContainer/workforce percentage".value = (float(self.workforce_current) * 100 / self.workforce_max)
 	$Panel/VBoxContainer/HBoxContainer/buy_box/UpgradeLabel.text = str(upgraded_number)
 	$Panel/VBoxContainer/HBoxContainer/buy_box/UpgradeButton.tooltip_text = Utils.resources_to_string(
 		_get_upgrade_cost()
@@ -97,13 +98,14 @@ func init(
 	self.input = input
 	self.description = description
 	self.base_upgrade_costs = upgrade_costs
-	self.upgraded_number = 0
+	self.upgraded_number = 1
+	self.upgrade_cost_scale = 1.3
 	_update_main_description()
 
 
 func tick():
 	# before this function is called, current workforce is set from outside
-	self.redraw()
+	redraw()
 	Resources.change_resources(input, true, workforce_current)
 	Resources.change_resources(output, false, workforce_current)
 
@@ -122,3 +124,42 @@ func get_desired_workforce():
 		var amount = Resources.resources[resource]
 		wanted_max = min(wanted_max, amount / input[resource])
 	return wanted_max
+
+
+func save_game():
+	return {
+		"job_name": job_name,
+		"workforce_max": workforce_max,
+		"workforce_max_base": workforce_max_base,
+		"workforce_current": workforce_current,
+		"workforce_limit_percentage": workforce_limit_percentage,
+		"description": description,
+		"base_upgrade_costs": base_upgrade_costs,
+		"upgraded_number": upgraded_number,
+		"upgrade_cost_scale": upgrade_cost_scale,
+		"output": output,
+		"input": input,
+	}
+
+
+func load_game(data_dict):
+	job_name = data_dict["job_name"]
+	workforce_max = int(data_dict["workforce_max"])
+	workforce_max_base = int(data_dict["workforce_max_base"])
+	workforce_current = int(data_dict["workforce_current"])
+	workforce_limit_percentage = data_dict["workforce_limit_percentage"]
+	description = data_dict["description"]
+
+	upgraded_number = int(data_dict["upgraded_number"])
+	upgrade_cost_scale = data_dict["upgrade_cost_scale"]
+	# need to convert keys from string to int (since json supports only string keys)
+	base_upgrade_costs = {}
+	for key in data_dict["base_upgrade_costs"]:
+		base_upgrade_costs[int(key)] = data_dict["base_upgrade_costs"][key]
+	output = {}
+	for key in data_dict["output"]:
+		output[int(key)] = data_dict["output"][key]
+	input = {}
+	for key in data_dict["input"]:
+		input[int(key)] = data_dict["input"][key]
+	redraw()
