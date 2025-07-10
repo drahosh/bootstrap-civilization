@@ -2,6 +2,7 @@ extends RefCounted
 
 class_name Enums
 
+# contains global enums and constants (static var dicts are technically mutable in code but i don't intend to change them anywhere)
 enum resource_types {
 	FOOD,
 	MATERIALS,
@@ -36,4 +37,15 @@ static var job_names = {
 	jobs.RECREATION: "Recreation",
 	jobs.CLOTHMAKING: "ClothMaking",
 }
-static var MAX = "MAX"  # used when muying multiples
+const MAX = "MAX"  # used when muying multiples
+enum unlock_state {
+	INVISIBLE,  # The revelation of unlock itself is not yet unlocked
+	LOCKED,
+	UNLOCKED,
+}
+
+static var unlock_name_to_class = {
+	# used when loading for serialization
+	"UnlockClothmaking": UnlockClothmaking,
+	"UnlockRecreation": UnlockRecreation,
+}

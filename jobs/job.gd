@@ -16,6 +16,7 @@ var input: Dictionary  # resources spent per workforce to produce
 # Called when the node enterss the scene tree for the first time.
 func _ready():
 	$Panel/VBoxContainer/HBoxContainer/buy_box/UpgradeButton.pressed.connect(upgrade)
+	GlobalSignals.manual_resource_change.connect(_set_button_clickbility)
 	self.redraw()
 
 
@@ -57,6 +58,7 @@ func upgrade(times = 1):
 		self.workforce_max += self.workforce_max_base
 		bought += 1
 	self.redraw()
+	GlobalSignals.manual_resource_change.emit()
 
 
 func _set_button_clickbility():

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwtw7os80cgu0"]
+[gd_scene load_steps=6 format=3 uid="uid://cwtw7os80cgu0"]
 
 [ext_resource type="Script" uid="uid://cvh7nlky6ub0x" path="res://main/main.gd" id="1_c651c"]
 [ext_resource type="PackedScene" uid="uid://dveaek1dp15vd" path="res://main/resources.tscn" id="2_3wy1v"]
 [ext_resource type="PackedScene" uid="uid://b3qnyj0t45ugr" path="res://population/population.tscn" id="3_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://45c78d4h22ha" path="res://jobs/jobs.tscn" id="4_4dugh"]
+[ext_resource type="PackedScene" uid="uid://cbcogsm8pe4h1" path="res://unlocks/unlocks.tscn" id="5_3wy1v"]
 
 [node name="Node2D" type="Control"]
 layout_mode = 3
@@ -69,3 +70,8 @@ current_tab = 0
 [node name="Jobs" parent="HSplitContainer/Clickables/TabContainer" instance=ExtResource("4_4dugh")]
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="Unlocks" parent="HSplitContainer/Clickables/TabContainer" instance=ExtResource("5_3wy1v")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1

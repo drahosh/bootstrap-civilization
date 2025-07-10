@@ -18,6 +18,10 @@ func set_resources(resources):
 	self.resources = resources
 
 
+func _ready():
+	GlobalSignals.manual_resource_change.connect(redraw)
+
+
 func redraw():
 	get_node("CenterContainer2/ResourceAmount").text = str(resources.resources[resource_key])
 	get_node("CenterContainer3/ResourceChange").text = str(resources.resource_changes[resource_key])

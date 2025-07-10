@@ -33,9 +33,18 @@ static func create_default_job(job: int) -> JobLine:
 		jobs.TOOLMAKING:
 			line.init(Enums.job_names[job], 10, {r.TOOLS: 1}, {r.MATERIALS: 1}, {r.MATERIALS: 20}, "Make tools")
 		jobs.CLOTHMAKING:
-			line.init(Enums.job_names[job], 10, {r.CLOTHES: 1}, {r.TEXTILES: 1}, {r.TOOLS: 20}, "Make clothes")
+			line.init(
+				Enums.job_names[job],
+				10,
+				{r.CLOTHES: 1},
+				{r.TEXTILES: 1},
+				{r.TOOLS: 20, r.TEXTILES: 100},
+				"Make clothes"
+			)
 		jobs.RECREATION:
-			line.init(Enums.job_names[job], 10, {r.CULTURE: 1}, {}, {r.FOOD: 20}, "Rest, Play, Make art")
+			line.init(
+				Enums.job_names[job], 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art"
+			)
 		_:
 			printerr("job number doesn't exist: " + str(job))
 	return line

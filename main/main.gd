@@ -5,6 +5,7 @@ static var miliseconds_saved = 0
 @onready var population = get_node("HSplitContainer/VScrollBar/VBoxContainer/Population")
 @onready var jobs = get_node("HSplitContainer/Clickables/TabContainer/Jobs")
 @onready var resources = get_node("HSplitContainer/VScrollBar/VBoxContainer/Resources")
+@onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
 static var time_since_last_save = 0.0
 static var save_interval_s = 15.0
 
@@ -20,6 +21,7 @@ func _tick():
 	resources.tick()
 	population.tick()
 	jobs.tick()
+	unlocks.tick()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -42,6 +44,7 @@ func save_game():
 		"resources": resources.save_game(),
 		"population": population.save_game(),
 		"jobs": jobs.save_game(),
+		"unlocks": unlocks.save_game(),
 	}
 	var save_file = FileAccess.open("user://bootstrapciv_savegame.save", FileAccess.WRITE)
 	var json_string = JSON.stringify(save_dict)
@@ -68,6 +71,7 @@ func load_game():
 	resources.load_game(data["resources"])
 	population.load_game(data["population"])
 	jobs.load_game(data["jobs"])
+	unlocks.load_game(data["unlocks"])
 	return true
 
 
@@ -77,6 +81,7 @@ func hard_reset():
 	population.reset()
 	resources.reset()
 	jobs.reset()
+	unlocks.reset()
 	time_since_last_save = 0.0
 	miliseconds_saved = 0
 	year_miliseconds = 2000

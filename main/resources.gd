@@ -43,6 +43,7 @@ func redraw_resource_list():
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_setup()
+	GlobalSignals.unlock_resource.connect(unlock_resource)
 
 
 func tick():
@@ -88,6 +89,13 @@ func load_game(dict):
 	enabled_resources = []
 	for value in dict["enabled_resources"]:
 		enabled_resources.append(int(value))
+	redraw_resource_list()
+
+
+func unlock_resource(resource: int):
+	enabled_resources.append(resource)
+	if resource not in resources:
+		resources[resource] = 0
 	redraw_resource_list()
 
 

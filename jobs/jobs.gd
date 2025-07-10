@@ -15,6 +15,7 @@ func _setup():
 func _ready():
 	super._ready()
 	self._setup()
+	GlobalSignals.unlock_job.connect(unlock_job)
 	pass  # Replace with function body.
 
 
@@ -48,6 +49,11 @@ func load_game(data_dict):
 		var line = job_line.instantiate()
 		line.load_game(data_dict[str(i)])  # file is converted to str json, we need to get it by float
 		self.add_child(line)
+
+
+func unlock_job(job: int):
+	var line = DefaultJobs.create_default_job(job)
+	self.add_child(line)
 
 
 func reset():

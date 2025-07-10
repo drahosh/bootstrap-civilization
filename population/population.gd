@@ -9,8 +9,8 @@ var max_age = 60
 var death_rates: Array
 var birth_rates: Array
 var work_rates: Array
-var population_male: Array
-var population_female: Array
+static var population_male: Array
+static var population_female: Array
 var workforce_total: int
 var population_change: int = 0
 var workforce_change: int = 0
@@ -36,7 +36,7 @@ var young_work_exponential = 0.9
 var start_working_age = 8
 
 
-func _get_population_total():
+static func get_population_total():
 	return Utils.sum_array(population_male) + Utils.sum_array(population_female)
 
 
@@ -97,8 +97,8 @@ func _setup_population():
 	population_male.fill(0)
 	population_female.fill(0)
 	for i in range(30):
-		population_female[i] = 10
-		population_male[i] = 10
+		population_female[i] = 1
+		population_male[i] = 1
 
 
 func _increase_age():
@@ -120,7 +120,7 @@ func _increase_age():
 
 func _eat_food():
 	# eats food (decreases the static resource), returns proportion of desired consumption that was sated
-	var desired_consumption = _get_population_total()
+	var desired_consumption = get_population_total()
 	var food = Resources.resources[Enums.resource_types.FOOD]
 	if food > desired_consumption:
 		Resources.resources[Enums.resource_types.FOOD] -= desired_consumption
@@ -179,17 +179,17 @@ func _calculate_deaths(satiety):
 
 func _redraw_ui():
 	get_node("Pyramid").queue_redraw()
-	get_node("Label").text = "Population:%s\nBase workforce:%s" % [_get_population_total(), workforce_total]
+	get_node("Label").text = "Population:%s\nBase workforce:%s" % [get_population_total(), workforce_total]
 
 
 func tick():
-	var old_population = _get_population_total()
+	var old_population = get_population_total()
 	_increase_age()
 	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
 	_calculate_work(satiety)
 	_calculate_births(satiety)
 	_calculate_deaths(satiety)
-	population_change = _get_population_total() - old_population
+	population_change = get_population_total() - old_population
 	_redraw_ui()
 
 
