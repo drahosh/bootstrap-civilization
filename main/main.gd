@@ -2,9 +2,9 @@ extends Control
 
 static var year_miliseconds = 2000
 static var miliseconds_saved = 0
-@onready var population = get_node("HSplitContainer/VScrollBar/VBoxContainer/Population")
+@onready var population = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Population")
 @onready var jobs = get_node("HSplitContainer/Clickables/TabContainer/Jobs")
-@onready var resources = get_node("HSplitContainer/VScrollBar/VBoxContainer/Resources")
+@onready var resources = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Resources")
 @onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
 static var time_since_last_save = 0.0
 static var save_interval_s = 15.0
@@ -14,7 +14,7 @@ static var save_interval_s = 15.0
 func _ready():
 	jobs.set_population(population)
 	self.load_game()
-	$HSplitContainer/VScrollBar/HardResetButton.pressed.connect(hard_reset)
+	$HSplitContainer/ScrollContainer/VBoxContainer/HardResetButton.pressed.connect(hard_reset)
 
 
 func _tick():
