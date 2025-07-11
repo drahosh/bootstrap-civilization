@@ -133,6 +133,17 @@ func _eat_food():
 		return float(food) / desired_consumption
 
 
+func _wear_clothes() -> float:
+	var desired_clothes = population_total
+	var clothes = Resources.resources[Enums.resource_types.CLOTHES]
+	var clothes_damage_factor = 0.1
+	if clothes >= desired_clothes:
+		Resources.change_resources({Enums.resource_types.CLOTHES: -desired_clothes * clothes_damage_factor})
+		return 1
+	else:
+		Resources.change_resources({Enums.resource_types.CLOTHES: -clothes * clothes_damage_factor})
+		return float(clothes) / desired_clothes
+
 
 func _calculate_work(satiety):
 	# Get total workforce for population
@@ -166,15 +177,21 @@ func _calculate_births(satiety):
 	population_male[0] = births_male
 
 
+func _calculate_deaths(satiety, clothedness):
 	# remove people. each person has death rate chance to die each turn
 	var satiety_multiplier
 	if satiety >= 0.7:
 		satiety_multiplier = 1
 	else:
-		satiety_multiplier = 1 + (0.7 - satiety) * 9
+		satiety_multiplier = 1 + (0.7 - satiety) * 13  # no food leads to >10x death rate
+	var clothedness_multiplier = 1 - clothedness * 0.1  # clothes decrease death chance by 10%
 	for i in range(max_age):
-		population_female[i] -= Utils.simulate_random_events(population_female[i], death_rates[i] * satiety_multiplier)
-		population_male[i] -= Utils.simulate_random_events(population_male[i], death_rates[i] * satiety_multiplier)
+		population_female[i] -= Utils.simulate_random_events(
+			population_female[i], min(death_rates[i] * satiety_multiplier * clothedness_multiplier, 1)
+		)
+		population_male[i] -= Utils.simulate_random_events(
+			population_male[i], min(death_rates[i] * satiety_multiplier * clothedness_multiplier, 1)
+		)
 
 
 func _redraw_ui():
@@ -186,9 +203,10 @@ func tick():
 	var old_population = population_total
 	_increase_age()
 	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
+	var clothedness = _wear_clothes()
 	_calculate_work(satiety)
 	_calculate_births(satiety)
-	_calculate_deaths(satiety)
+	_calculate_deaths(satiety, clothedness)
 	calculate_population_total()
 	population_change = population_total - old_population
 	_redraw_ui()
