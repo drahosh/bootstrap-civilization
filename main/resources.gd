@@ -4,25 +4,21 @@ class_name Resources
 var resource_line: PackedScene = preload("res://main/resource_line.tscn")
 static var resources: Dictionary = {}  # map of resource name to amount
 static var resource_changes: Dictionary = {}  # map of changes from last tick. Is reset to 0 at start of tick, then increased or decreased during processing
-var enabled_resources = []  # list of resources shown in UI
+var visible_resources = []  # list of resources shown in UI
 
 
 func _setup():
-	enabled_resources = [
+	visible_resources = [
 		Enums.resource_types.FOOD,
 		Enums.resource_types.MATERIALS,
 		Enums.resource_types.TEXTILES,
 		Enums.resource_types.TOOLS,
 	]
-	Resources.resources = {
-		Enums.resource_types.FOOD: 500,
-		Enums.resource_types.MATERIALS: 20,
-		Enums.resource_types.TEXTILES: 0,
-		Enums.resource_types.METALS: 0,
-		Enums.resource_types.TOOLS: 0,
-	}
+
 	for key in Enums.resource_types.values():
-		Resources.resource_changes[key] = 0
+		resources[key] = 0
+		resource_changes[key] = 0
+	resources[Enums.resource_types.FOOD] = 100
 	redraw_resource_list()
 
 
@@ -30,7 +26,7 @@ func _setup():
 func redraw_resource_list():
 	for child in get_children():
 		child.free()
-	for resource in enabled_resources:
+	for resource in visible_resources:
 		var line: Resource_line = resource_line.instantiate() as Resource_line
 
 		line.set_label(Enums.resource_names[resource])
@@ -74,7 +70,7 @@ func save_game():
 	return {
 		"resources": resources,
 		"resource_changes": resource_changes,
-		"enabled_resources": enabled_resources,
+		"visible_resources": visible_resources,
 	}
 
 
@@ -86,14 +82,14 @@ func load_game(dict):
 	resource_changes = {}
 	for key in dict["resource_changes"]:
 		resource_changes[int(key)] = dict["resource_changes"][key]
-	enabled_resources = []
-	for value in dict["enabled_resources"]:
-		enabled_resources.append(int(value))
+	visible_resources = []
+	for value in dict["visible_resources"]:
+		visible_resources.append(int(value))
 	redraw_resource_list()
 
 
 func unlock_resource(resource: int):
-	enabled_resources.append(resource)
+	visible_resources.append(resource)
 	if resource not in resources:
 		resources[resource] = 0
 	redraw_resource_list()

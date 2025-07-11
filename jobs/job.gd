@@ -105,8 +105,16 @@ func init(
 	_update_main_description()
 
 
+func _correct_wanted_percentage():
+	# correct value if user inputs nonsense
+	var percentage = $Panel/VBoxContainer/HBoxContainer/WantedPercentage.text
+	if not percentage.is_valid_int() or int(percentage) < 0 or int(percentage) > 100:
+		$Panel/VBoxContainer/HBoxContainer/WantedPercentage.text = "100"
+
+
 func tick():
 	# before this function is called, current workforce is set from outside
+	_correct_wanted_percentage()
 	redraw()
 	Resources.change_resources(input, true, workforce_current)
 	Resources.change_resources(output, false, workforce_current)
@@ -115,16 +123,12 @@ func tick():
 func get_desired_workforce():
 	# returns how many workers this can take taking into account available input
 	var max = workforce_max
-	var wanted_percentage = $Panel/VBoxContainer/HBoxContainer/LineEdit.text
-	if wanted_percentage.is_valid_int():
-		wanted_percentage = int(wanted_percentage)
-	else:
-		$Panel/VBoxContainer/HBoxContainer/LineEdit.text = 100
-		wanted_percentage = 100
-	var wanted_max = int(max * float(wanted_percentage) / 100)
+	_correct_wanted_percentage()
+	var wanted_percentage = int($Panel/VBoxContainer/HBoxContainer/WantedPercentage.text)
+	var wanted_max = floor(max * float(wanted_percentage) / 100)
 	for resource in input:
 		var amount = Resources.resources[resource]
-		wanted_max = min(wanted_max, amount / input[resource])
+		wanted_max = min(wanted_max, floor(amount / input[resource]))
 	return wanted_max
 
 

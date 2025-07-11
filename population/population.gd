@@ -34,10 +34,12 @@ var male_work_multiplier = 1.1
 var old_work_exponential = 0.95
 var young_work_exponential = 0.9
 var start_working_age = 8
+static var population_total: int
 
 
-static func get_population_total():
-	return Utils.sum_array(population_male) + Utils.sum_array(population_female)
+static func calculate_population_total():
+	# needs to be called after population changes in tick
+	population_total = Utils.sum_array(population_male) + Utils.sum_array(population_female)
 
 
 func add_death_rate():
@@ -99,6 +101,7 @@ func _setup_population():
 	for i in range(30):
 		population_female[i] = 1
 		population_male[i] = 1
+	calculate_population_total()
 
 
 func _increase_age():
@@ -120,27 +123,24 @@ func _increase_age():
 
 func _eat_food():
 	# eats food (decreases the static resource), returns proportion of desired consumption that was sated
-	var desired_consumption = get_population_total()
+	var desired_consumption = population_total
 	var food = Resources.resources[Enums.resource_types.FOOD]
-	if food > desired_consumption:
-		Resources.resources[Enums.resource_types.FOOD] -= desired_consumption
-		Resources.resource_changes[Enums.resource_types.FOOD] -= desired_consumption
+	if food >= desired_consumption:
+		Resources.change_resources({Enums.resource_types.FOOD: -desired_consumption})
 		return 1
 	else:
-		Resources.resource_changes[Enums.resource_types.FOOD] -= food
+		Resources.change_resources({Enums.resource_types.FOOD: -food})
+		return float(food) / desired_consumption
 
-		var satiety = float(food) / desired_consumption
-		Resources.resources[Enums.resource_types.FOOD] = 0
-		return satiety
 
 
 func _calculate_work(satiety):
 	# Get total workforce for population
-	var satiety_factor  # no food gets you only 10% of work
-	if satiety >= 0.7:
+	var satiety_factor  # no food still gets you 20% work
+	if satiety >= 0.8:
 		satiety_factor = 1
 	else:
-		satiety_factor = 0.3 + satiety
+		satiety_factor = 0.2 + satiety
 	var new_workforce = 0.0
 	for i in range(start_working_age, max_age):
 		new_workforce += population_female[i] * work_rates[i] * female_work_multiplier
@@ -154,18 +154,18 @@ func _calculate_births(satiety):
 	# adds new 0 year old people
 	var births_female = 0
 	var births_male = 0
+
 	for i in range(18, max_age):
 		var potential = (
-			satiety
-			* (population_female[i] * female_birth_influence + population_male[i] * (1 - female_birth_influence))
+			population_female[i] * female_birth_influence + population_male[i] * (1 - female_birth_influence)
 		)
-		births_female += Utils.simulate_random_events(round(potential / 2), birth_rates[i])
-		births_male += Utils.simulate_random_events(round(potential / 2), birth_rates[i])
+
+		births_female += Utils.simulate_random_events(round(potential / 2), birth_rates[i] * satiety)
+		births_male += Utils.simulate_random_events(round(potential / 2), birth_rates[i] * satiety)
 	population_female[0] = births_female
 	population_male[0] = births_male
 
 
-func _calculate_deaths(satiety):
 	# remove people. each person has death rate chance to die each turn
 	var satiety_multiplier
 	if satiety >= 0.7:
@@ -179,17 +179,18 @@ func _calculate_deaths(satiety):
 
 func _redraw_ui():
 	get_node("Pyramid").queue_redraw()
-	get_node("Label").text = "Population:%s\nBase workforce:%s" % [get_population_total(), workforce_total]
+	get_node("Label").text = "Population:%s\nBase workforce:%s" % [population_total, workforce_total]
 
 
 func tick():
-	var old_population = get_population_total()
+	var old_population = population_total
 	_increase_age()
 	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
 	_calculate_work(satiety)
 	_calculate_births(satiety)
 	_calculate_deaths(satiety)
-	population_change = get_population_total() - old_population
+	calculate_population_total()
+	population_change = population_total - old_population
 	_redraw_ui()
 
 

@@ -4,11 +4,11 @@ class_name UnlockRecreation
 
 
 func checkVisible() -> bool:
-	return Resources.resources[Enums.resource_types.FOOD] >= 2000
+	return Population.population_total >= 200
 
 
 func checkUnlock() -> bool:
-	return Resources.resources[Enums.resource_types.FOOD] >= 10000
+	return Population.population_total >= 800
 
 
 func unlock() -> void:
@@ -17,5 +17,5 @@ func unlock() -> void:
 
 
 func _ready() -> void:
-	description_1 = "Stockpile 1000 food"
+	description_1 = "Reach 800 population"
 	description_2 = "Recreation"

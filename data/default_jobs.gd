@@ -16,7 +16,7 @@ static func create_default_job(job: int) -> JobLine:
 			line.init(
 				Enums.job_names[job],
 				10,
-				{r.FOOD: 2, r.MATERIALS: 0.1, r.TEXTILES: 0},
+				{r.FOOD: 2, r.MATERIALS: 0.1},
 				{},
 				{r.TOOLS: 10},
 				"Walk around looking for stuff to eat"
@@ -25,7 +25,7 @@ static func create_default_job(job: int) -> JobLine:
 			line.init(
 				Enums.job_names[job],
 				10,
-				{r.FOOD: 2, r.MATERIALS: 0, r.TEXTILES: 0.2},
+				{r.FOOD: 2, r.TEXTILES: 0.2},
 				{},
 				{r.TOOLS: 20},
 				"Hunt larger animals in groups"
