@@ -1,0 +1,9 @@
+# Autoloaded as GlobalVariables
+# Contains variables that can change during game (mostly by prestiging)
+extends Node
+
+var job_expand_scale = 1.3
+
+var capacity_upgrade_size = 1.2  # increases by percentage
+var capacity_upgrade_base_cost = {Enums.resource_types.CULTURE: 100}
+var job_upgrade_scale = 1.5

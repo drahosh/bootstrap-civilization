@@ -5,6 +5,7 @@ var resource_line: PackedScene = preload("res://main/resource_line.tscn")
 static var resources: Dictionary = {}  # map of resource name to amount
 static var resource_changes: Dictionary = {}  # map of changes from last tick. Is reset to 0 at start of tick, then increased or decreased during processing
 var visible_resources = []  # list of resources shown in UI
+var resource_capacities = {}  # nonperishable capacity for perishable resources
 
 
 func _setup():
@@ -15,10 +16,12 @@ func _setup():
 		Enums.resource_types.TOOLS,
 	]
 
-	for key in Enums.resource_types.values():
-		resources[key] = 0
-		resource_changes[key] = 0
+	for resource_type in Enums.resource_types.values():
+		resources[resource_type] = 0
+		resource_changes[resource_type] = 0
 	resources[Enums.resource_types.FOOD] = 100
+	for resource_type in Enums.perishable_resources:
+		resource_capacities[resource_type] = 0
 	redraw_resource_list()
 
 
@@ -40,25 +43,40 @@ func redraw_resource_list():
 func _ready():
 	_setup()
 	GlobalSignals.unlock_resource.connect(unlock_resource)
+	GlobalSignals.manual_resource_change.connect(refresh_display)
+
+
+func process_perishables():
+	for resource_type in Enums.perishable_resources:
+		var perishable = resources[resource_type] - resource_capacities[resource_type]
+		change_resources({resource_type: -perishable * Enums.perishable_resources[resource_type]})
+
+
+func refresh_display():
+	for line in get_children():
+		line.redraw_resource()
+	GlobalSignals.resources_recounted.emit()
 
 
 func tick():
-	#zero resource changes
 	for line in get_children():
 		line.redraw()
+	GlobalSignals.resources_recounted.emit()
 	for key in Enums.resource_types.values():
 		Resources.resource_changes[key] = 0
 
 
-static func change_resources(to_change: Dictionary, negative: bool = false, times: int = 1):
+static func change_resources(to_change: Dictionary, negative: bool = false, times: int = 1, manual = false):
 	# for each resource in to_change, resource[key] += to_change[key]
-	# if negative is true, use -= in instead
+	# if negative is true, use -= in instead (useful with multiple items in dictionary)
 	# repeats 'times' times (useful if multiplying everything in to_change by same number, like in jobs)
 	# This function assumes you're not using it to pay more of a resource than is set, you need to check this separately
 	var negator = -1 if negative else 1
 	for key in to_change:
 		resources[key] += to_change[key] * negator * times
-		resource_changes[key] += to_change[key] * negator * times
+		# could emit manual resource change signal here, but that could cause hundreds of signals with current implementation of buy max
+		if not manual:
+			resource_changes[key] += to_change[key] * negator * times
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

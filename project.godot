@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.4", "GL Compatibility")
 [autoload]
 
 GlobalSignals="*res://utils/global_signals.gd"
+GlobalVariables="*res://utils/global_variables.gd"
 
 [editor_plugins]
 

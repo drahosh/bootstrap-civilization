@@ -13,25 +13,33 @@ static func create_default_job(job: int) -> JobLine:
 	# initializes with: name, base workforce max, base income per workforce, bases description, base upgrade costs
 	match job:
 		jobs.GATHERING:
-			line.init(
-				Enums.job_names[job],
-				10,
-				{r.FOOD: 2, r.MATERIALS: 0.1},
-				{},
-				{r.TOOLS: 10},
-				"Walk around looking for stuff to eat"
+			(
+				line
+				. init(
+					Enums.job_names[job],
+					10,
+					{r.FOOD: 2, r.MATERIALS: 0.1},
+					{},
+					{r.TOOLS: 10},
+					"Walk around looking for stuff to eat",
+					1,
+				)
 			)
 		jobs.HUNTING:
-			line.init(
-				Enums.job_names[job],
-				10,
-				{r.FOOD: 2, r.TEXTILES: 0.2},
-				{},
-				{r.TOOLS: 20},
-				"Hunt larger animals in groups"
+			(
+				line
+				. init(
+					Enums.job_names[job],
+					10,
+					{r.FOOD: 2, r.TEXTILES: 0.2},
+					{},
+					{r.TOOLS: 20},
+					"Hunt larger animals in groups",
+					1,
+				)
 			)
 		jobs.TOOLMAKING:
-			line.init(Enums.job_names[job], 10, {r.TOOLS: 1}, {r.MATERIALS: 1}, {r.MATERIALS: 20}, "Make tools")
+			line.init(Enums.job_names[job], 10, {r.TOOLS: 1}, {r.MATERIALS: 1}, {r.MATERIALS: 20}, "Make tools", 2)
 		jobs.CLOTHMAKING:
 			line.init(
 				Enums.job_names[job],
@@ -39,11 +47,12 @@ static func create_default_job(job: int) -> JobLine:
 				{r.CLOTHES: 1},
 				{r.TEXTILES: 1},
 				{r.TOOLS: 20, r.TEXTILES: 100},
-				"Make clothes"
+				"Make clothes",
+				3
 			)
 		jobs.RECREATION:
 			line.init(
-				Enums.job_names[job], 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art"
+				Enums.job_names[job], 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art", 1
 			)
 		_:
 			printerr("job number doesn't exist: " + str(job))

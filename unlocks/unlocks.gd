@@ -12,6 +12,7 @@ func reset():
 		child.free()
 	add_child(UnlockClothmaking.new())
 	add_child(UnlockRecreation.new())
+	add_child(UnlockUpgrades.new())
 
 
 func tick():

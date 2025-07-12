@@ -89,12 +89,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
-[node name="UpgradeLabel" type="Label" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
+[node name="ExpandLabel" type="Label" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
 layout_mode = 2
 text = "1"
 horizontal_alignment = 1
 
-[node name="UpgradeButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
+[node name="ExpandButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer/buy_box"]
 layout_mode = 2
 disabled = true
 text = "Expand
