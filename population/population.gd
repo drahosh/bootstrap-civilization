@@ -145,18 +145,11 @@ func _wear_clothes() -> float:
 		return float(clothes) / desired_clothes
 
 
-func _calculate_work(satiety):
-	# Get total workforce for population
-	var satiety_factor  # no food still gets you 20% work
-	if satiety >= 0.8:
-		satiety_factor = 1
-	else:
-		satiety_factor = 0.2 + satiety
+func _calculate_work():
 	var new_workforce = 0.0
 	for i in range(start_working_age, max_age):
 		new_workforce += population_female[i] * work_rates[i] * female_work_multiplier
 		new_workforce += population_male[i] * work_rates[i] * male_work_multiplier
-	new_workforce = floor(new_workforce * satiety_factor)
 	workforce_change = new_workforce - workforce_total
 	workforce_total = new_workforce
 
@@ -204,7 +197,7 @@ func tick():
 	_increase_age()
 	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
 	var clothedness = _wear_clothes()
-	_calculate_work(satiety)
+	_calculate_work()
 	_calculate_births(satiety)
 	_calculate_deaths(satiety, clothedness)
 	calculate_population_total()
