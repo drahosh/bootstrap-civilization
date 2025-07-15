@@ -117,3 +117,4 @@ func hard_reset():
 	miliseconds_saved = 0
 	year_miliseconds = 2000
 	unlocked_sections = []
+	soft_reset()

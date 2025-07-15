@@ -63,3 +63,14 @@ func _ready():
 			var instance = voluntary_scene.instantiate()
 			instance.set_script(script)
 			$VBoxContainer.add_child(instance)
+
+
+func reset():
+	for child in $VBoxContainer.get_children():
+		child.reset()
+
+
+func hard_reset():
+	for child in $VBoxContainer.get_children():
+		child.free()
+	_ready()
