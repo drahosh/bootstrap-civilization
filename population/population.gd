@@ -4,7 +4,8 @@ class_name Population
 
 const Enums = preload("res://data/enums.gd")
 #maximum age of living population, extends graph
-var max_age = 60
+const DEFAULT_MAX_AGE = 60
+var max_age = DEFAULT_MAX_AGE
 # Called when the node enters the scene tree for the first time.
 var death_rates: Array
 var birth_rates: Array
@@ -15,17 +16,16 @@ var workforce_total: int
 var population_change: int = 0
 var workforce_change: int = 0
 # Death rate stats
-var zero_death_rate = 0.3
-var juvenile_death_rate = 0.03
-var adult_death_rate = 0.01
+var zero_death_rate = 0.5
+var juvenile_death_rate = 0.06
+var adult_death_rate = 0.02
 var elder_cutoff = 40  #also counts as birth rate stat
-var age_death_rate_exponential = 1.5
+var age_death_rate_exponential = 1.2
 
 # birth rate stats
-var adult_birth_rate = 0.1
-var age_birth_rate_exponential = 0.5
-var female_birth_influence = 0.9  # this * female pop + (1-this) * male pop is base for reproduction
-
+var adult_birth_rate = 0.3
+var age_birth_rate_exponential = 0.8
+var female_birth_influence = 0.  # this * female pop + (1-this) * male pop is base for reproduction
 # workforce rate stats
 
 var adult_work_rate = 1.0
@@ -61,7 +61,7 @@ func recalculate_death_rates():
 
 func add_birth_rate():
 	# same as add_death_rate but  for birth rate
-	birth_rates.append(death_rates[-1] * age_death_rate_exponential)
+	birth_rates.append(birth_rates[-1] * age_birth_rate_exponential)
 
 
 func recalculate_birth_rates():
@@ -108,7 +108,9 @@ func _increase_age():
 	# Makes everyone one year older
 	# could mix with death and birth into one function to reduce performance cost of push_front,
 	# but i don't think it will be needed
-	if population_female[max_age] > 0 or population_male[max_age] > 0:
+	population_female.push_front(0)
+	population_male.push_front(0)
+	if population_female[max_age + 1] > 0 or population_male[max_age + 1] > 0:
 		print("increasing max age")
 		max_age += 1
 		add_birth_rate()
@@ -117,8 +119,15 @@ func _increase_age():
 	else:
 		population_female.pop_back()
 		population_male.pop_back()
-	population_female.push_front(0)
-	population_male.push_front(0)
+		while max_age > DEFAULT_MAX_AGE and population_female[max_age] == 0 and population_male[max_age] == 0:
+			# reducing max age (mostly due to changes in visuals
+			while population_female[max_age] == 0 and population_male[max_age] == 0:
+				max_age -= 1
+				population_female.pop_back()
+				population_male.pop_back()
+				birth_rates.pop_back()
+				death_rates.pop_back()
+				work_rates.pop_back()
 
 
 func _eat_food():
@@ -178,7 +187,7 @@ func _calculate_deaths(satiety, clothedness):
 	else:
 		satiety_multiplier = 1 + (0.7 - satiety) * 13  # no food leads to >10x death rate
 	var clothedness_multiplier = 1 - clothedness * 0.1  # clothes decrease death chance by 10%
-	for i in range(max_age):
+	for i in range(max_age + 1):
 		population_female[i] -= Utils.simulate_random_events(
 			population_female[i], min(death_rates[i] * satiety_multiplier * clothedness_multiplier, 1)
 		)
@@ -214,11 +223,6 @@ func _ready():
 	_redraw_ui()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func save_game():
 	return {
 		"max_age": max_age,
@@ -245,16 +249,16 @@ func save_game():
 
 
 func load_game(data_dict):
-	max_age = data_dict["max_age"]
-	population_male = data_dict["population_male"]
-	population_female = data_dict["population_female"]
-	workforce_total = data_dict["workforce_total"]
-	population_change = data_dict["population_change"]
-	workforce_change = data_dict["workforce_change"]
+	max_age = int(data_dict["max_age"])
+	population_male = Utils.float_array_to_int(data_dict["population_male"])
+	population_female = Utils.float_array_to_int(data_dict["population_female"])
+	workforce_total = int(data_dict["workforce_total"])
+	population_change = int(data_dict["population_change"])
+	workforce_change = int(data_dict["workforce_change"])
 	zero_death_rate = data_dict["zero_death_rate"]
 	juvenile_death_rate = data_dict["juvenile_death_rate"]
 	adult_death_rate = data_dict["adult_death_rate"]
-	elder_cutoff = data_dict["elder_cutoff"]
+	elder_cutoff = int(data_dict["elder_cutoff"])
 	age_death_rate_exponential = data_dict["age_death_rate_exponential"]
 	adult_birth_rate = data_dict["adult_birth_rate"]
 	age_birth_rate_exponential = data_dict["age_birth_rate_exponential"]
@@ -264,7 +268,7 @@ func load_game(data_dict):
 	male_work_multiplier = data_dict["male_work_multiplier"]
 	old_work_exponential = data_dict["old_work_exponential"]
 	young_work_exponential = data_dict["young_work_exponential"]
-	start_working_age = data_dict["start_working_age"]
+	start_working_age = int(data_dict["start_working_age"])
 	recalculate_birth_rates()
 	recalculate_death_rates()
 	recalculate_work_rates()

@@ -11,6 +11,7 @@ var pyramid_magnitude = 1  # used to smoothen rescaling from larger to smaller
 var pyramid_increments_number = 1  # ditto
 const PYRAMID_REDUCTION_JUMP = 10  # ditto
 const MAX_INCREMENTS_NUMBER = 100  # changing this constant DOES NOT set it, only changes smoothing
+var pyramid_max_age
 
 
 func set_population(population: Population):
@@ -18,9 +19,11 @@ func set_population(population: Population):
 
 
 func _draw() -> void:
+	pyramid_max_age = ceil(float(population.max_age) / population_label_frequency) * population_label_frequency
 	var bottom = self.size.y
 	var width = self.size.x
-	var population_bar_width = floor(bottom / population.max_age)  # vertical width of a bar
+	# in next line using float like this intentionally to make the result a float in format x.0, for drawing lines
+	var population_bar_width = float(floor(bottom / pyramid_max_age))  # vertical width of a bar
 	var middle_width = round(max(width * middle_min_width_ratio, middle_min_width))
 	var left_midpoint = (width - middle_width) / 2
 	var right_midpoint = (width + middle_width) / 2
@@ -111,20 +114,24 @@ func _draw() -> void:
 			Color.CORNFLOWER_BLUE,
 			population_bar_width
 		)
-		# draw vertical label
-		if age % population_label_frequency == 0:
-			draw_line(
-				Vector2(left_midpoint + margin, current_bottom - population_bar_width / 2),
-				Vector2(right_midpoint - margin, current_bottom - population_bar_width / 2),
-				Color.BLACK,
-				population_bar_width
-			)
-			draw_string(
-				ThemeDB.fallback_font,
-				Vector2(left_midpoint + margin, current_bottom - population_bar_width),
-				str(age),
-				HORIZONTAL_ALIGNMENT_CENTER,
-				middle_width - (margin * 2),
-				10
-			)
 		current_bottom -= population_bar_width
+
+	# drawing age labels in the middle
+	current_bottom = bottom
+	for age in range(0, pyramid_max_age + 1, population_label_frequency):
+		# draw vertical label
+		draw_line(
+			Vector2(left_midpoint + margin, current_bottom - population_bar_width / 2),
+			Vector2(right_midpoint - margin, current_bottom - population_bar_width / 2),
+			Color.BLACK,
+			population_bar_width
+		)
+		draw_string(
+			ThemeDB.fallback_font,
+			Vector2(left_midpoint + margin, current_bottom - population_bar_width),
+			str(age),
+			HORIZONTAL_ALIGNMENT_CENTER,
+			middle_width - (margin * 2),
+			10
+		)
+		current_bottom -= population_bar_width * population_label_frequency

@@ -11,7 +11,7 @@ static func simulate_random_events(number, probability):
 	if number < 100:
 		var summary = 0
 		for _i in range(number):
-			if randf() < probability:
+			if randf() <= probability:
 				summary += 1
 		return summary
 	return clamp(round(randfn(number * probability, sqrt(number * (1 - probability)))), 0, number)
@@ -45,3 +45,12 @@ static func resources_to_string(dict: Dictionary):
 		firstline = false
 		result += "%s: %s" % [Enums.resource_names[key], dict[key]]
 	return result
+
+
+static func float_array_to_int(array: Array):
+	# converts array of floats into array of ints
+	# useful for deserialization from json
+	var new_array = []
+	for i in range(len(array)):
+		new_array.append(int(array[i]))
+	return new_array
