@@ -7,6 +7,10 @@ var middle_min_width_ratio = 0.05
 var margin = 0  # distance from middle bar to population bars
 #var population_bar_width = 10
 var population_label_frequency = 10
+var pyramid_magnitude = 1  # used to smoothen rescaling from larger to smaller
+var pyramid_increments_number = 1  # ditto
+const PYRAMID_REDUCTION_JUMP = 10  # ditto
+const MAX_INCREMENTS_NUMBER = 100  # changing this constant DOES NOT set it, only changes smoothing
 
 
 func set_population(population: Population):
@@ -27,9 +31,25 @@ func _draw() -> void:
 	# draw horizontal label
 	var magnitude = Utils.order_of_magnitude(maximum_age_group)
 	var increment_population = max(pow(10, magnitude - 1), 1)
-	var increments_number = maximum_age_group / increment_population
-	var increment_width = float(max_bar_length) / increments_number
-	for x in range(1, increments_number + 1):
+	var increments_number = ceil(maximum_age_group / increment_population)
+
+	## decrease frequency of pyramid getting smaller to smooth out animation
+	if (
+		magnitude > pyramid_magnitude
+		or (magnitude == pyramid_magnitude and increments_number > pyramid_increments_number)
+	):
+		# pyramid is getting bigger
+		pyramid_magnitude = magnitude
+		pyramid_increments_number = increments_number
+	elif (
+		(magnitude < pyramid_magnitude and increments_number < MAX_INCREMENTS_NUMBER - PYRAMID_REDUCTION_JUMP)
+		or (magnitude == pyramid_magnitude and increments_number < pyramid_increments_number - PYRAMID_REDUCTION_JUMP)
+	):  # pyramid is getting smaller
+		pyramid_magnitude = magnitude
+		pyramid_increments_number = increments_number
+	var max_drawable_population = pyramid_increments_number * increment_population
+	var increment_width = float(max_bar_length) / pyramid_increments_number
+	for x in range(1, pyramid_increments_number + 1):
 		# draw female vertical line
 		draw_line(
 			Vector2(left_midpoint - margin - x * increment_width, 0),
@@ -66,7 +86,7 @@ func _draw() -> void:
 			)
 	for age in range(population.max_age + 1):
 		# draw female bar
-		var female_pop_percentage = float(population.population_female[age]) / maximum_age_group
+		var female_pop_percentage = float(population.population_female[age]) / max_drawable_population
 		draw_line(
 			Vector2(left_midpoint - margin, current_bottom - population_bar_width / 2),
 			Vector2(
@@ -78,7 +98,7 @@ func _draw() -> void:
 		)
 
 		# draw male bar
-		var male_pop_percentage = float(population.population_male[age]) / maximum_age_group
+		var male_pop_percentage = float(population.population_male[age]) / max_drawable_population
 		draw_line(
 			Vector2(
 				right_midpoint + margin,
