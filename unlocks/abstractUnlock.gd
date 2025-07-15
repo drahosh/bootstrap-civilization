@@ -5,7 +5,7 @@ class_name AbstractUnlock
 
 var unlock_state: int = Enums.unlock_state.INVISIBLE
 var description_1: String = "MISSING TEXT"  # ex. "reach 500 population"
-var description_2: String = "MISSING TEXT"  #ex. "Clothmaking"
+var description_2: String = "MISSING TEXT"  #ex. "CLOTHESMAKING"
 
 
 #####################################
@@ -29,6 +29,10 @@ func unlock() -> void:
 
 # END OF FUNCTIONS TO IMPLEMENT IN CHILD
 #####################################
+
+
+func _init():
+	horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 
 func _ready():

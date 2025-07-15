@@ -1,6 +1,6 @@
 extends AbstractUnlock
 
-class_name UnlockClothmaking
+class_name UnlockClothesmaking
 
 
 func checkVisible() -> bool:
@@ -8,14 +8,14 @@ func checkVisible() -> bool:
 
 
 func checkUnlock() -> bool:
-	return Population.population_total >= 500
+	return Population.population_total >= 200
 
 
 func unlock() -> void:
-	GlobalSignals.unlock_job.emit(Enums.jobs.CLOTHMAKING)
+	GlobalSignals.unlock_job.emit(Enums.jobs.CLOTHESMAKING)
 	GlobalSignals.unlock_resource.emit(Enums.resource_types.CLOTHES)
 
 
 func _ready() -> void:
-	description_1 = "Reach 500 population"
-	description_2 = "Clothmaking"
+	description_1 = "Reach 200 population"
+	description_2 = "CLOTHESMAKING"

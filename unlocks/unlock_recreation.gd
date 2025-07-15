@@ -8,7 +8,7 @@ func checkVisible() -> bool:
 
 
 func checkUnlock() -> bool:
-	return Population.population_total >= 800
+	return Population.population_total >= 500
 
 
 func unlock() -> void:
@@ -17,5 +17,5 @@ func unlock() -> void:
 
 
 func _ready() -> void:
-	description_1 = "Reach 800 population"
+	description_1 = "Reach 500 population"
 	description_2 = "Recreation"

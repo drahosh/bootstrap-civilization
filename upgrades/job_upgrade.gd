@@ -34,7 +34,7 @@ func init(capacity_cost_multiplier: int, capacity_affecting_upgrade: Signal, job
 
 
 func _ready():
-	GlobalSignals.manual_resource_change.connect(toggle_affordable)
+	GlobalSignals.manual_resource_change.connect(toggle_affordable, CONNECT_DEFERRED)
 	$VBoxContainer/HBoxContainer/CapButton.pressed.connect(upgrade_capacity)
 	toggle_visibility()
 	redraw_buttons()

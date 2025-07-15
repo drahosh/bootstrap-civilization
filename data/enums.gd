@@ -13,6 +13,7 @@ enum resource_types {
 	CLOTHES,
 	TERRITORY,
 	KNOWLEDGE,
+	LUXURY,
 }
 static var resource_names = {
 	resource_types.FOOD: "Food",
@@ -24,6 +25,7 @@ static var resource_names = {
 	resource_types.CLOTHES: "Clothes",
 	resource_types.TERRITORY: "Territory",
 	resource_types.KNOWLEDGE: "Knowledge",
+	resource_types.LUXURY: "Luxury",
 }
 static var perishable_resources = {
 	resource_types.CULTURE: 0.01,
@@ -31,18 +33,24 @@ static var perishable_resources = {
 	resource_types.KNOWLEDGE: 0.05,
 }
 enum jobs {
-	GATHERING,
+	GATHERING,  # TODO also works as farming
 	HUNTING,
 	TOOLMAKING,
 	RECREATION,
-	CLOTHMAKING,
+	CLOTHESMAKING,
+	WOODCUTTING,
+	ARTMAKING,
+	FARMING,
 }
 static var job_names = {
 	jobs.GATHERING: "Gathering",
 	jobs.HUNTING: "Hunting",
 	jobs.TOOLMAKING: "Toolmaking",
 	jobs.RECREATION: "Recreation",
-	jobs.CLOTHMAKING: "ClothMaking",
+	jobs.CLOTHESMAKING: "ClothesMaking",
+	jobs.WOODCUTTING: "Woodcutting",
+	jobs.ARTMAKING: "Artmaking",
+	jobs.FARMING: "Farming",
 }
 const MAX = "MAX"  # used when muying multiples
 enum unlock_state {
@@ -53,17 +61,46 @@ enum unlock_state {
 
 static var unlock_name_to_class = {
 	# used when loading for serialization
-	"UnlockClothmaking": UnlockClothmaking,
+	"UnlockClothesmaking": UnlockClothesmaking,
 	"UnlockRecreation": UnlockRecreation,
 	"UnlockUpgrades": UnlockUpgrades,
+	"UnlockResearch": UnlockResearch
 }
 
 # sections of UI that are not visible at the beginning
-enum UnlockableSections { UPGRADES }
+enum UnlockableSections {
+	UPGRADES,
+	RESEARCH,
+}
 
 enum job_upgrade_types {
 	CAPACITY,
 	THROUGHPUT,
 	EFFICIENCY,
 	OUTPUT,
+}
+
+enum research_type {
+	# need to keep them in order, so using multiples of 10 to make room in between
+	# Posive are voluntary, negative are tempting
+	WOODCUTTING = 10,
+	FIBERS = 20,
+	BONES = 30,
+	DOGS = 40,
+	BIRDS = 50,
+	FARMING = 60,
+}
+static var research_type_to_class = {
+	research_type.WOODCUTTING: ResearchWoodcutting,
+	research_type.FIBERS: ResearchFibers,
+	research_type.BONES: ResearchBones,
+	research_type.DOGS: ResearchDogs,
+	research_type.BIRDS: ResearchBirds,
+	research_type.FARMING: ResearchFarming,
+}
+enum research_job_changes {
+	CHANGE_OUTPUT,
+	OUTPUT_MULTIPLIER,
+	CAPACITY_MULTIPLIER,
+	NEW_JOB_TYPE,
 }

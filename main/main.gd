@@ -6,6 +6,7 @@ static var miliseconds_saved = 0
 @onready var jobs = get_node("HSplitContainer/Clickables/TabContainer/Jobs")
 @onready var resources = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Resources")
 @onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
+@onready var research = get_node("LockedSections/ResearchList")
 @onready var upgrades = $LockedSections/Upgrades
 static var time_since_last_save = 0.0
 static var save_interval_s = 15.0
@@ -21,6 +22,7 @@ func _ready():
 
 
 func _tick():
+	research.tick()
 	population.tick()
 	resources.process_perishables()
 	jobs.tick()
@@ -46,6 +48,8 @@ func unlock_section(section: int):
 		match section:
 			Enums.UnlockableSections.UPGRADES:
 				upgrades.reparent($HSplitContainer/Clickables/TabContainer)
+			Enums.UnlockableSections.RESEARCH:
+				research.reparent($HSplitContainer/Clickables/TabContainer)
 
 
 func save_game():
@@ -57,6 +61,7 @@ func save_game():
 		"population": population.save_game(),
 		"jobs": jobs.save_game(),
 		"unlocks": unlocks.save_game(),
+		"research": research.save_game(),
 		"unlocked_sections": unlocked_sections,
 	}
 	var save_file = FileAccess.open("user://bootstrapciv_savegame.save", FileAccess.WRITE)
@@ -84,6 +89,7 @@ func load_game():
 	population.load_game(data["population"])
 	jobs.load_game(data["jobs"])
 	unlocks.load_game(data["unlocks"])
+	research.load_game(data["research"])
 	for section in data["unlocked_sections"]:
 		unlock_section(section)
 	return true

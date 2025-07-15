@@ -4,11 +4,11 @@ class_name UnlockUpgrades
 
 
 func checkVisible() -> bool:
-	return Population.population_total >= 800
+	return Population.population_total >= 500
 
 
 func checkUnlock() -> bool:
-	return Resources.resources[Enums.resource_types.CULTURE] >= 100
+	return Resources.resources[Enums.resource_types.CULTURE] >= 200
 
 
 func unlock() -> void:
@@ -16,5 +16,5 @@ func unlock() -> void:
 
 
 func _ready() -> void:
-	description_1 = "Amass 100 culture"
+	description_1 = "Amass 200 culture"
 	description_2 = "Job Upgrades"

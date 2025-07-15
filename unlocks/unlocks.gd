@@ -10,9 +10,10 @@ func _ready() -> void:
 func reset():
 	for child in get_children():
 		child.free()
-	add_child(UnlockClothmaking.new())
+	add_child(UnlockClothesmaking.new())
 	add_child(UnlockRecreation.new())
 	add_child(UnlockUpgrades.new())
+	add_child(UnlockResearch.new())
 
 
 func tick():

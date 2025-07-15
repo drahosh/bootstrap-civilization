@@ -21,7 +21,7 @@ GlobalVariables="*res://utils/global_variables.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ReorderableContainer/plugin.cfg", "res://addons/gdLinter/plugin.cfg", "res://addons/gdscript_formatter/plugin.cfg")
+enabled=PackedStringArray("res://addons/ReorderableContainer/plugin.cfg", "res://addons/gdscript_formatter/plugin.cfg")
 
 [rendering]
 

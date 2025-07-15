@@ -16,7 +16,7 @@ static func create_default_job(job: int) -> JobLine:
 			(
 				line
 				. init(
-					Enums.job_names[job],
+					job,
 					10,
 					{r.FOOD: 2, r.MATERIALS: 0.1},
 					{},
@@ -29,7 +29,7 @@ static func create_default_job(job: int) -> JobLine:
 			(
 				line
 				. init(
-					Enums.job_names[job],
+					job,
 					10,
 					{r.FOOD: 2, r.TEXTILES: 0.2},
 					{},
@@ -39,21 +39,14 @@ static func create_default_job(job: int) -> JobLine:
 				)
 			)
 		jobs.TOOLMAKING:
-			line.init(Enums.job_names[job], 10, {r.TOOLS: 1}, {r.MATERIALS: 1}, {r.MATERIALS: 20}, "Make tools", 2)
-		jobs.CLOTHMAKING:
-			line.init(
-				Enums.job_names[job],
-				10,
-				{r.CLOTHES: 1},
-				{r.TEXTILES: 1},
-				{r.TOOLS: 20, r.TEXTILES: 100},
-				"Make clothes",
-				3
-			)
+			line.init(job, 10, {r.TOOLS: 1}, {r.MATERIALS: 1}, {r.MATERIALS: 20}, "Make tools", 2)
+		jobs.CLOTHESMAKING:
+			line.init(job, 10, {r.CLOTHES: 1}, {r.TEXTILES: 1}, {r.TOOLS: 20, r.TEXTILES: 100}, "Make clothes", 3)
 		jobs.RECREATION:
-			line.init(
-				Enums.job_names[job], 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art", 1
-			)
+			line.init(job, 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art", 1)
+		jobs.WOODCUTTING:
+			line.init(job, 10, {r.MATERIALS: 3}, {r.TOOLS: 1}, {r.TOOLS: 100}, "Cut wood", 5)
+
 		_:
 			printerr("job number doesn't exist: " + str(job))
 	return line

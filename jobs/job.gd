@@ -1,6 +1,6 @@
 extends HBoxContainer
 class_name JobLine
-var job_name: String
+var job_type: int
 var workforce_max: int
 var workforce_max_base: int
 var workforce_current: int
@@ -11,6 +11,8 @@ var expanded_number: int
 var output: Dictionary  # resource amount produced per workforce
 var input: Dictionary  # resources spent per workforce to produce
 var upgrade: JobUpgrade
+var research_output_multiplier = 1.0  # multiply all outputs
+var research_capacity_multiplier = 1.0  # multiply capacity
 
 const upgrade_scene: PackedScene = preload("res://upgrades/job_upgrade.tscn")
 
@@ -23,6 +25,7 @@ func _ready():
 	GlobalSignals.resources_recounted.connect(_set_button_clickability)
 	capacity_affecting_upgrade.connect(calculate_max_workforce)
 	capacity_affecting_upgrade.connect(redraw)
+	GlobalSignals.research_job_change.connect(research_change)
 	redraw()
 
 
@@ -31,7 +34,7 @@ func _update_main_description():
 		"""[b]%s[/b]
 	work: %s
 	max:  %s"""
-		% [job_name, workforce_current, workforce_max]
+		% [Enums.job_names[job_type], workforce_current, workforce_max]
 	)
 
 
@@ -91,7 +94,7 @@ func redraw():
 
 
 func init(
-	job_name: String,
+	job_type: int,
 	workforce_max: int,
 	output: Dictionary,
 	input: Dictionary,
@@ -99,7 +102,7 @@ func init(
 	description: String,
 	upgrade_cost_multiplier: int
 ):
-	self.job_name = job_name
+	self.job_type = job_type
 	self.workforce_max = workforce_max
 	self.workforce_max_base = workforce_max
 	self.output = output
@@ -108,7 +111,7 @@ func init(
 	self.base_expand_costs = expand_costs
 	self.expanded_number = 1
 	upgrade = upgrade_scene.instantiate()
-	upgrade.init(upgrade_cost_multiplier, capacity_affecting_upgrade, job_name)
+	upgrade.init(upgrade_cost_multiplier, capacity_affecting_upgrade, Enums.job_names[job_type])
 	GlobalSignals.add_upgrade.emit(upgrade)
 	calculate_max_workforce()
 
@@ -129,7 +132,7 @@ func tick():
 	# before this function is called, current workforce is set from outside
 	_correct_wanted_percentage()
 	Resources.change_resources(input, true, workforce_current)
-	Resources.change_resources(output, false, workforce_current)
+	Resources.change_resources(output, false, workforce_current * research_output_multiplier)
 	redraw()
 
 
@@ -147,12 +150,12 @@ func get_desired_workforce():
 
 func calculate_max_workforce():
 	var multiplier = upgrade.get_capacity_multiplier()
-	workforce_max = round(workforce_max_base * expanded_number * multiplier)
+	workforce_max = round(workforce_max_base * expanded_number * multiplier * research_capacity_multiplier)
 
 
 func save_game():
 	return {
-		"job_name": job_name,
+		"job_type": job_type,
 		"workforce_max_base": workforce_max_base,
 		"workforce_current": workforce_current,
 		"workforce_limit_percentage": workforce_limit_percentage,
@@ -162,17 +165,20 @@ func save_game():
 		"output": output,
 		"input": input,
 		"upgrade": upgrade.save_game(),
+		"research_output_multiplier": research_output_multiplier,
+		"research_capacity_multiplier": research_capacity_multiplier,
 	}
 
 
 func load_game(data_dict):
-	job_name = data_dict["job_name"]
+	job_type = data_dict["job_type"]
 	workforce_max_base = int(data_dict["workforce_max_base"])
 	workforce_current = int(data_dict["workforce_current"])
 	workforce_limit_percentage = data_dict["workforce_limit_percentage"]
 	description = data_dict["description"]
-
 	expanded_number = int(data_dict["expanded_number"])
+	research_output_multiplier = data_dict["research_output_multiplier"]
+	research_capacity_multiplier = data_dict["research_capacity_multiplier"]
 	# need to convert keys from string to int (since json supports only string keys)
 	base_expand_costs = {}
 	for key in data_dict["base_expand_costs"]:
@@ -188,4 +194,20 @@ func load_game(data_dict):
 	enable_upgrades()
 	GlobalSignals.add_upgrade.emit(upgrade)
 	calculate_max_workforce()
+	redraw()
+
+
+func research_change(_job_type: int, upgrade: Dictionary):
+	if job_type != _job_type:
+		return
+	if Enums.research_job_changes.CHANGE_OUTPUT in upgrade:
+		for key in upgrade[Enums.research_job_changes.CHANGE_OUTPUT]:
+			if key not in output:
+				output[key] = 0
+			output[key] += upgrade[Enums.research_job_changes.CHANGE_OUTPUT][key]
+	if Enums.research_job_changes.OUTPUT_MULTIPLIER in upgrade:
+		research_output_multiplier *= upgrade[Enums.research_job_changes.OUTPUT_MULTIPLIER]
+	if Enums.research_job_changes.CAPACITY_MULTIPLIER in upgrade:
+		research_capacity_multiplier *= upgrade[Enums.research_job_changes.CAPACITY_MULTIPLIER]
+		calculate_max_workforce()
 	redraw()

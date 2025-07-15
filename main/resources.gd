@@ -107,7 +107,8 @@ func load_game(dict):
 
 
 func unlock_resource(resource: int):
-	visible_resources.append(resource)
+	if resource not in visible_resources:
+		visible_resources.append(resource)
 	if resource not in resources:
 		resources[resource] = 0
 	redraw_resource_list()
