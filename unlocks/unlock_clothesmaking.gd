@@ -18,4 +18,4 @@ func unlock() -> void:
 
 func _ready() -> void:
 	description_1 = "Reach 200 population"
-	description_2 = "CLOTHESMAKING"
+	description_2 = "Making clothes"
