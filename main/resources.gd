@@ -73,7 +73,11 @@ static func change_resources(to_change: Dictionary, negative: bool = false, time
 	# This function assumes you're not using it to pay more of a resource than is set, you need to check this separately
 	var negator = -1 if negative else 1
 	for key in to_change:
-		resources[key] += to_change[key] * negator * times
+		# When buying things manually, you actually spend only half the amount of food you need
+		var manual_food_mult = 1
+		if manual and key == Enums.resource_types.FOOD:
+			manual_food_mult = 0.5  #
+		resources[key] += to_change[key] * negator * times * manual_food_mult
 		# could emit manual resource change signal here, but that could cause hundreds of signals with current implementation of buy max
 		if not manual:
 			resource_changes[key] += to_change[key] * negator * times
