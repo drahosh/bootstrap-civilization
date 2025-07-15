@@ -93,7 +93,7 @@ func draw_progress():
 
 func tick():
 	# attempt to pay research cost using resources, but can pa at most research_input_ratio of each resource
-	if completed or not unlocked or not $VBoxContainer/Enabled.button_pressed:
+	if completed or not unlocked or not $VBoxContainer/HBoxContainer/Enabled.button_pressed:
 		return
 	var current_cost = _get_current_cost()
 	var paid_everything = true

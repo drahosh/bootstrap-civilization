@@ -99,3 +99,8 @@ func redraw_buttons():
 func enable():
 	enabled = true
 	toggle_visibility()
+
+
+func change_job_name(new_name):
+	job_name = new_name
+	$VBoxContainer/Label.text = job_name

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://0lm46xpkf71f" path="res://Research/abstract_voluntary_research.gd" id="1_svsn8"]
 
 [node name="VoluntaryResearch" type="PanelContainer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

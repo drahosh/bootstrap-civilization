@@ -197,17 +197,20 @@ func load_game(data_dict):
 	redraw()
 
 
-func research_change(_job_type: int, upgrade: Dictionary):
+func research_change(_job_type: int, change: Dictionary):
 	if job_type != _job_type:
 		return
-	if Enums.research_job_changes.CHANGE_OUTPUT in upgrade:
-		for key in upgrade[Enums.research_job_changes.CHANGE_OUTPUT]:
+	if Enums.research_job_changes.CHANGE_OUTPUT in change:
+		for key in change[Enums.research_job_changes.CHANGE_OUTPUT]:
 			if key not in output:
 				output[key] = 0
-			output[key] += upgrade[Enums.research_job_changes.CHANGE_OUTPUT][key]
-	if Enums.research_job_changes.OUTPUT_MULTIPLIER in upgrade:
-		research_output_multiplier *= upgrade[Enums.research_job_changes.OUTPUT_MULTIPLIER]
-	if Enums.research_job_changes.CAPACITY_MULTIPLIER in upgrade:
-		research_capacity_multiplier *= upgrade[Enums.research_job_changes.CAPACITY_MULTIPLIER]
+			output[key] += change[Enums.research_job_changes.CHANGE_OUTPUT][key]
+	if Enums.research_job_changes.OUTPUT_MULTIPLIER in change:
+		research_output_multiplier *= change[Enums.research_job_changes.OUTPUT_MULTIPLIER]
+	if Enums.research_job_changes.CAPACITY_MULTIPLIER in change:
+		research_capacity_multiplier *= change[Enums.research_job_changes.CAPACITY_MULTIPLIER]
 		calculate_max_workforce()
+	if Enums.research_job_changes.NEW_JOB_TYPE in change:
+		job_type = change[Enums.research_job_changes.NEW_JOB_TYPE]
+		upgrade.job_name = Enums.job_names[job_type]
 	redraw()
