@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b83lc0f7jwelb" path="res://upgrades/job_upgrade.gd" id="1_r1pwo"]
 
 [node name="Upgrade" type="PanelContainer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -95,15 +95,24 @@ func load_game():
 	return true
 
 
-func hard_reset():
-	if FileAccess.file_exists("user://bootstrapciv_savegame.save"):
-		DirAccess.remove_absolute("user://bootstrapciv_savegame.save")
+func soft_reset():
+	# Usually Prestige
+	unlocked_sections = []  # TODO keep prestige when implemented
 	upgrades.reset()
 	upgrades.reparent($LockedSections)
 	population.reset()
 	resources.reset()
 	jobs.reset()
 	unlocks.reset()
+	research.reset()
+	upgrades.reparent($LockedSections)
+	research.reparent($LockedSections)
+
+
+func hard_reset():
+	if FileAccess.file_exists("user://bootstrapciv_savegame.save"):
+		DirAccess.remove_absolute("user://bootstrapciv_savegame.save")
+	research.hard_reset()
 	time_since_last_save = 0.0
 	miliseconds_saved = 0
 	year_miliseconds = 2000

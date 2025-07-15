@@ -17,6 +17,28 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_c651c")
 
+[node name="LockedSections" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Upgrades" parent="LockedSections" instance=ExtResource("6_kfbq2")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="ResearchList" parent="LockedSections" instance=ExtResource("7_4dugh")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 clip_children = 1
 clip_contents = true
@@ -73,25 +95,3 @@ metadata/_tab_index = 0
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
-
-[node name="LockedSections" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Upgrades" parent="LockedSections" instance=ExtResource("6_kfbq2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="ResearchList" parent="LockedSections" instance=ExtResource("7_4dugh")]
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
