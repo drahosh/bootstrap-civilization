@@ -2,7 +2,7 @@ extends Control
 
 static var year_seconds = 2.0
 @onready var population = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Population")
-@onready var jobs = get_node("HSplitContainer/Clickables/TabContainer/Jobs")
+@onready var jobs = $HSplitContainer/Clickables/TabContainer/Jobs/ReorderableVBox
 @onready var resources = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Resources")
 @onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
 @onready var research = get_node("LockedSections/ResearchList")

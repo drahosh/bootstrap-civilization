@@ -2,13 +2,22 @@
 
 [ext_resource type="Script" uid="uid://byc1yoj3jypkx" path="res://jobs/jobs.gd" id="1_jckef"]
 
-[node name="Jobs" type="Container"]
+[node name="Jobs" type="ScrollContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 3
+
+[node name="ReorderableVBox" type="Container" parent="."]
+process_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_jckef")
+is_vertical = true
 metadata/_custom_type_script = "uid://31b00omo01yi"
+
+[connection signal="sort_children" from="ReorderableVBox" to="ReorderableVBox" method="_on_sort_children"]
