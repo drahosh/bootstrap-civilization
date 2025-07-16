@@ -72,11 +72,12 @@ func toggle_affordable():
 	# TODO other upgrades when implemented
 
 
-func upgrade_capacity(times = 1):
+func upgrade_capacity():
 	# times can be int>=1 or Enums.MAX
 	var bought = 0
+	var buy_multiplier = TopBar.buy_multiplier
 	while true:
-		if times is int and bought >= times:
+		if buy_multiplier is int and bought >= buy_multiplier:
 			break
 		if not can_afford_upgrade(Enums.job_upgrade_types.CAPACITY):
 			break

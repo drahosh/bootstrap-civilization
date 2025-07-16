@@ -1,0 +1,4 @@
+[gd_resource type="Theme" format=3 uid="uid://chip0sgbxdq47"]
+
+[resource]
+Button/colors/icon_pressed_color = Color(0.171456, 0.817288, 0, 1)

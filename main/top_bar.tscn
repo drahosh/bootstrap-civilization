@@ -1,0 +1,140 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvm1vxbj5oshl"]
+
+[ext_resource type="Script" uid="uid://b7sl1gslutxpd" path="res://main/top_bar.gd" id="1_afk40"]
+[ext_resource type="Texture2D" uid="uid://nsqo68d4qw1r" path="res://icons/play-button.png" id="1_qxqyf"]
+[ext_resource type="Texture2D" uid="uid://cbcm5183ot533" path="res://icons/pause-button.png" id="2_afk40"]
+[ext_resource type="Texture2D" uid="uid://re2gam1fhmqs" path="res://icons/speedometer.png" id="3_vi3jp"]
+[ext_resource type="Theme" uid="uid://chip0sgbxdq47" path="res://main/turbo_button.tres" id="4_vi3jp"]
+[ext_resource type="Texture2D" uid="uid://bvq4ucxjlydnk" path="res://icons/speedometer_green.png" id="6_1x1he"]
+
+[sub_resource type="Theme" id="Theme_1x1he"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tal20"]
+bg_color = Color(0.253707, 0.3302, 0.464604, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="TimeControl" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = SubResource("Theme_1x1he")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tal20")
+
+[node name="TimeBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+script = ExtResource("1_afk40")
+
+[node name="Padding" type="Control" parent="TimeBar"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Year" type="Label" parent="TimeBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Year: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Padding2" type="Control" parent="TimeBar"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Pause" type="TextureButton" parent="TimeBar"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+toggle_mode = true
+texture_normal = ExtResource("2_afk40")
+texture_pressed = ExtResource("1_qxqyf")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TimeBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Turbo" type="TextureButton" parent="TimeBar/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme = ExtResource("4_vi3jp")
+toggle_mode = true
+texture_normal = ExtResource("3_vi3jp")
+texture_pressed = ExtResource("6_1x1he")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Speed" type="Label" parent="TimeBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Speed:"
+
+[node name="TurboOptions" type="OptionButton" parent="TimeBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+selected = 0
+item_count = 4
+popup/item_0/text = "2x"
+popup/item_0/id = 0
+popup/item_1/text = "5x"
+popup/item_1/id = 1
+popup/item_2/text = "10x"
+popup/item_2/id = 2
+popup/item_3/text = "MAX"
+popup/item_3/id = 3
+
+[node name="Label" type="Label" parent="TimeBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Saved time: 0h 0m 0s"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Padding3" type="Control" parent="TimeBar"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="VBoxContainer2" type="HBoxContainer" parent="TimeBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="TimeBar/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Buy multiple:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BuyOptions" type="OptionButton" parent="TimeBar/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+toggle_mode = false
+selected = 0
+item_count = 3
+popup/item_0/text = "1x"
+popup/item_0/id = 0
+popup/item_1/text = "10x"
+popup/item_1/id = 1
+popup/item_2/text = "MAX"
+popup/item_2/id = 2

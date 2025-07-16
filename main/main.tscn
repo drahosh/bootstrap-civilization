@@ -1,15 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://cwtw7os80cgu0"]
+[gd_scene load_steps=9 format=3 uid="uid://cwtw7os80cgu0"]
 
 [ext_resource type="Script" uid="uid://cvh7nlky6ub0x" path="res://main/main.gd" id="1_c651c"]
 [ext_resource type="PackedScene" uid="uid://dveaek1dp15vd" path="res://main/resources.tscn" id="2_3wy1v"]
 [ext_resource type="PackedScene" uid="uid://b3qnyj0t45ugr" path="res://population/population.tscn" id="3_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://45c78d4h22ha" path="res://jobs/jobs.tscn" id="4_4dugh"]
+[ext_resource type="PackedScene" uid="uid://dvm1vxbj5oshl" path="res://main/top_bar.tscn" id="4_67ri8"]
 [ext_resource type="PackedScene" uid="uid://cbcogsm8pe4h1" path="res://unlocks/unlocks.tscn" id="5_3wy1v"]
 [ext_resource type="PackedScene" uid="uid://c18e0ly2b3ok3" path="res://upgrades/upgrades.tscn" id="6_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://dk76a6xqsytv4" path="res://Research/research_list.tscn" id="7_4dugh"]
 
-[node name="Node2D" type="Control"]
-layout_mode = 3
+[node name="Node2D" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,9 +19,7 @@ script = ExtResource("1_c651c")
 
 [node name="LockedSections" type="Control" parent="."]
 visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 2
 
 [node name="Upgrades" parent="LockedSections" instance=ExtResource("6_kfbq2")]
 layout_mode = 0
@@ -39,15 +37,14 @@ anchor_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
 
+[node name="TimeControl" parent="." instance=ExtResource("4_67ri8")]
+layout_mode = 2
+
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 clip_children = 1
 clip_contents = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/autohide = 0
 split_offset = 290
 

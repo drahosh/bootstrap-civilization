@@ -54,11 +54,11 @@ func _can_afford_expansion(number: int = 1):
 	return affordable
 
 
-func expand(times = 1):
-	# times can be integer or Enums.MAX
+func expand():
 	var bought = 0
+	var buy_multiplier = TopBar.buy_multiplier
 	while true:
-		if times is int and bought >= times:
+		if buy_multiplier is int and bought >= buy_multiplier:
 			break
 		if not _can_afford_expansion():
 			break

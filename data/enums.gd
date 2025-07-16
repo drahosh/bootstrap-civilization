@@ -52,7 +52,6 @@ static var job_names = {
 	jobs.ARTMAKING: "Artmaking",
 	jobs.FARMING: "Farming",
 }
-const MAX = "MAX"  # used when muying multiples
 enum unlock_state {
 	INVISIBLE,  # The revelation of unlock itself is not yet unlocked
 	LOCKED,
