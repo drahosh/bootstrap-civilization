@@ -90,7 +90,6 @@ func redraw():
 		tooltip += "base consumption per workforce:\n"
 		tooltip += Utils.resources_to_string(input)
 	$Panel.tooltip_text = tooltip
-	upgrade.toggle_affordable()
 
 
 func init(

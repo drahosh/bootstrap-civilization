@@ -29,6 +29,7 @@ func _tick():
 	population.tick()
 	resources.process_perishables()
 	jobs.tick()
+	upgrades.tick()
 	unlocks.tick()
 	resources.tick()
 	timeControl.tick()
