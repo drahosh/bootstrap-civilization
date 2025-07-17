@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cwtw7os80cgu0"]
+[gd_scene load_steps=10 format=3 uid="uid://cwtw7os80cgu0"]
 
 [ext_resource type="Script" uid="uid://cvh7nlky6ub0x" path="res://main/main.gd" id="1_c651c"]
 [ext_resource type="PackedScene" uid="uid://dveaek1dp15vd" path="res://main/resources.tscn" id="2_3wy1v"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://45c78d4h22ha" path="res://jobs/jobs.tscn" id="4_4dugh"]
 [ext_resource type="PackedScene" uid="uid://dvm1vxbj5oshl" path="res://main/top_bar.tscn" id="4_67ri8"]
 [ext_resource type="PackedScene" uid="uid://cbcogsm8pe4h1" path="res://unlocks/unlocks.tscn" id="5_3wy1v"]
+[ext_resource type="PackedScene" uid="uid://cs4ajdiks7qka" path="res://crises/crises.tscn" id="6_grrlh"]
 [ext_resource type="PackedScene" uid="uid://c18e0ly2b3ok3" path="res://upgrades/upgrades.tscn" id="6_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://dk76a6xqsytv4" path="res://Research/research_list.tscn" id="7_4dugh"]
 
@@ -29,7 +30,7 @@ anchor_bottom = 0.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="ResearchList" parent="LockedSections" instance=ExtResource("7_4dugh")]
+[node name="Research" parent="LockedSections" instance=ExtResource("7_4dugh")]
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -61,9 +62,14 @@ size_flags_vertical = 3
 
 [node name="Resources" parent="HSplitContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_3wy1v")]
 layout_mode = 2
-size_flags_vertical = 3
+
+[node name="Crises" parent="HSplitContainer/ScrollContainer/VBoxContainer" instance=ExtResource("6_grrlh")]
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
 
 [node name="Population" parent="HSplitContainer/ScrollContainer/VBoxContainer" instance=ExtResource("3_kfbq2")]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
 
 [node name="HardResetButton" type="Button" parent="HSplitContainer/ScrollContainer/VBoxContainer"]

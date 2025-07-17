@@ -5,9 +5,10 @@ static var year_seconds = 2.0
 @onready var jobs = $HSplitContainer/Clickables/TabContainer/Jobs/ReorderableVBox
 @onready var resources = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Resources")
 @onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
-@onready var research = get_node("LockedSections/ResearchList")
+@onready var research = $LockedSections/Research
 @onready var upgrades = $LockedSections/Upgrades
 @onready var timeControl = $TimeControl/TimeBar
+@onready var crises = $HSplitContainer/ScrollContainer/VBoxContainer/Crises
 static var time_since_last_save = 0.0
 static var save_interval_s = 15.0
 var last_timestamp = Time.get_unix_time_from_system()
@@ -32,6 +33,7 @@ func _tick():
 	upgrades.tick()
 	unlocks.tick()
 	resources.tick()
+	crises.tick()
 	timeControl.tick()
 
 
@@ -105,11 +107,13 @@ func save_game():
 		"last_timestamp": last_timestamp,
 		"turbo_time": turbo_time,
 		"year": timeControl.year,
+		"age": timeControl.age,
 		"resources": resources.save_game(),
 		"population": population.save_game(),
 		"jobs": jobs.save_game(),
 		"unlocks": unlocks.save_game(),
 		"research": research.save_game(),
+		"crises": crises.save_game(),
 		"unlocked_sections": unlocked_sections,
 	}
 	var save_file = FileAccess.open("user://bootstrapciv_savegame.save", FileAccess.WRITE)
@@ -133,12 +137,14 @@ func load_game():
 	var data = json.data
 	last_timestamp = data["last_timestamp"]
 	timeControl.set_year(data["year"])
+	timeControl.change_age(data["age"])
 	turbo_time = data["turbo_time"]
 	resources.load_game(data["resources"])
 	population.load_game(data["population"])
 	jobs.load_game(data["jobs"])
 	unlocks.load_game(data["unlocks"])
 	research.load_game(data["research"])
+	crises.load_game(data["crises"])
 	for section in data["unlocked_sections"]:
 		unlock_section(section)
 	return true
@@ -154,6 +160,7 @@ func soft_reset():
 	jobs.reset()
 	unlocks.reset()
 	research.reset()
+	crises.reset()
 	upgrades.reparent($LockedSections)
 	research.reparent($LockedSections)
 	saved_time = 0

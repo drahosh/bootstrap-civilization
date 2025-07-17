@@ -5,13 +5,20 @@ extends HBoxContainer
 
 class_name TopBar
 
-var year = 1
+static var year = 1
 var turbo_time: int = 0  # in whole seconds
 static var buy_multiplier = 1  # can be positive int or "MAX"
+static var age = Enums.ages.NOMADIC
 
 
 func _ready():
 	$VBoxContainer2/BuyOptions.item_selected.connect(_change_multiplier)
+	GlobalSignals.change_age.connect(change_age)
+
+
+func change_age(_age: int):
+	age = _age
+	$Age.text = Enums.age_names[age] + " age"
 
 
 func _change_multiplier(selected):

@@ -27,6 +27,7 @@ func tick():
 	var remaining_workforce = population.workforce_total
 	# for job in all child jobs, ordered based on drag and drop
 	for job: JobLine in self.get_children():
+		job.process_crises()
 		var used_workforce = min(remaining_workforce, job.get_desired_workforce())
 		job.workforce_current = used_workforce
 		job.tick()

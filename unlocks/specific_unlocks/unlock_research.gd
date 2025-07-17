@@ -4,11 +4,11 @@ class_name UnlockResearch
 
 
 func checkVisible() -> bool:
-	return Population.population_total >= 500
+	return Population.population_total >= 500 or TopBar.year >= 500
 
 
 func checkUnlock() -> bool:
-	return Population.population_total >= 2000
+	return Population.population_total >= 1000 or TopBar.year >= 550
 
 
 func unlock() -> void:
@@ -20,5 +20,5 @@ func unlock() -> void:
 
 
 func _ready() -> void:
-	description_1 = "Reach 3000 population"
+	description_1 = "Reach 1000 population or year 550"
 	description_2 = "Research"

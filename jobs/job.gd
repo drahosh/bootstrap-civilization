@@ -13,7 +13,7 @@ var input: Dictionary  # resources spent per workforce to produce
 var upgrade: JobUpgrade
 var research_output_multiplier = 1.0  # multiply all outputs
 var research_capacity_multiplier = 1.0  # multiply capacity
-
+var crisis_capacity_multiplier = 1.0
 const upgrade_scene: PackedScene = preload("res://upgrades/job_upgrade.tscn")
 
 signal capacity_affecting_upgrade
@@ -149,7 +149,10 @@ func get_desired_workforce():
 
 func calculate_max_workforce():
 	var multiplier = upgrade.get_capacity_multiplier()
-	workforce_max = round(workforce_max_base * expanded_number * multiplier * research_capacity_multiplier)
+
+	workforce_max = round(
+		workforce_max_base * expanded_number * multiplier * research_capacity_multiplier * crisis_capacity_multiplier
+	)
 
 
 func save_game():
@@ -213,3 +216,11 @@ func research_change(_job_type: int, change: Dictionary):
 		job_type = change[Enums.research_job_changes.NEW_JOB_TYPE]
 		upgrade.job_name = Enums.job_names[job_type]
 	redraw()
+
+
+func process_crises():
+	# called from jobs before tick, since it can affect max workforce
+	if job_type in Enums.land_based_jobs:
+		if CrisisCompetition.effect != crisis_capacity_multiplier:
+			crisis_capacity_multiplier = CrisisCompetition.effect
+			calculate_max_workforce()

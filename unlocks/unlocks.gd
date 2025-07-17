@@ -10,6 +10,10 @@ func _ready() -> void:
 func reset():
 	for child in get_children():
 		child.free()
+	# Create all disasters and unlocks
+	# Disasters:
+	add_child(DisasterCompetition.new())
+	# Unlocks:
 	add_child(UnlockClothesmaking.new())
 	add_child(UnlockRecreation.new())
 	add_child(UnlockUpgrades.new())

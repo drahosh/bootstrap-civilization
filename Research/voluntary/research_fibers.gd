@@ -9,7 +9,7 @@ func _ready():
 	}
 	base_success_chance = 10
 	research_type = Enums.research_type.FIBERS
-	description = "Figure out how to make textiles out of fibers \nGathering/Farming also producess textiles"
+	description = "Figure out how to make textiles out of fibers \nGathering/Farming also produces textiles"
 	super._ready()
 
 

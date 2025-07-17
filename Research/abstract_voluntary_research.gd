@@ -39,6 +39,8 @@ func save_game():
 		"description": description,
 		"completed": completed,
 		"unlocked": unlocked,
+		"research_cost_paid": research_cost_paid,
+		"enabled": $VBoxContainer/HBoxContainer/Enabled.button_pressed
 	}
 
 
@@ -49,6 +51,9 @@ func load_game(data_dict: Dictionary):
 	description = data_dict["description"]
 	completed = data_dict["completed"]
 	unlocked = data_dict["unlocked"]
+	for key in data_dict["research_cost_paid"]:
+		research_cost_paid[int(key)] = int(data_dict["research_cost_paid"][key])
+	$VBoxContainer/HBoxContainer/Enabled.button_pressed = data_dict["enabled"]
 	if unlocked and not completed:
 		visible = true
 	draw_description()

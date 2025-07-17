@@ -21,4 +21,4 @@ func finish_success():
 			Enums.research_job_changes.NEW_JOB_TYPE: Enums.jobs.FARMING
 		}
 	)
-	# TODO enter next age
+	GlobalSignals.change_age.emit(Enums.ages.SETTLED)

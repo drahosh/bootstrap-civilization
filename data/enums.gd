@@ -42,6 +42,7 @@ enum jobs {
 	ARTMAKING,
 	FARMING,
 }
+static var land_based_jobs = [jobs.GATHERING, jobs.HUNTING, jobs.WOODCUTTING, jobs.FARMING]
 static var job_names = {
 	jobs.GATHERING: "Gathering",
 	jobs.HUNTING: "Hunting",
@@ -56,6 +57,7 @@ enum unlock_state {
 	INVISIBLE,  # The revelation of unlock itself is not yet unlocked
 	LOCKED,
 	UNLOCKED,
+	RESOLVED,  # used for disasters
 }
 
 static var unlock_name_to_class = {
@@ -63,7 +65,8 @@ static var unlock_name_to_class = {
 	"UnlockClothesmaking": UnlockClothesmaking,
 	"UnlockRecreation": UnlockRecreation,
 	"UnlockUpgrades": UnlockUpgrades,
-	"UnlockResearch": UnlockResearch
+	"UnlockResearch": UnlockResearch,
+	"DisasterCompetition": DisasterCompetition,
 }
 
 # sections of UI that are not visible at the beginning
@@ -102,4 +105,19 @@ enum research_job_changes {
 	OUTPUT_MULTIPLIER,
 	CAPACITY_MULTIPLIER,
 	NEW_JOB_TYPE,
+}
+
+enum crises {
+	COMPETITION,
+}
+static var crisis_to_class = {
+	crises.COMPETITION: CrisisCompetition,
+}
+enum ages {
+	NOMADIC,
+	SETTLED,
+}
+static var age_names = {
+	ages.NOMADIC: "Nomadic",
+	ages.SETTLED: "Settled",
 }

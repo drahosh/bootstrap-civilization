@@ -111,7 +111,6 @@ func _increase_age():
 	population_female.push_front(0)
 	population_male.push_front(0)
 	if population_female[max_age + 1] > 0 or population_male[max_age + 1] > 0:
-		print("increasing max age")
 		max_age += 1
 		add_birth_rate()
 		add_death_rate()
