@@ -35,11 +35,13 @@ var old_work_exponential = 0.95
 var young_work_exponential = 0.9
 var start_working_age = 8
 static var population_total: int
+static var max_population_this_run: int = 0
 
 
 static func calculate_population_total():
 	# needs to be called after population changes in tick
 	population_total = Utils.sum_array(population_male) + Utils.sum_array(population_female)
+	max_population_this_run = max(max_population_this_run, population_total)
 
 
 func add_death_rate():
@@ -162,12 +164,20 @@ func _calculate_work():
 	workforce_total = new_workforce
 
 
+func _generate_culture():
+	var culture_generated = 0.0
+	for i in range(0, max_age + 1):
+		var culture_rate = (1.0 - work_rates[i]) * 0.1
+		culture_generated += culture_rate * (population_female[i] + population_male[i])
+	Resources.change_resources({Enums.resource_types.CULTURE: culture_generated})
+
+
 func _calculate_births(satiety):
 	# adds new 0 year old people
 	var births_female = 0
 	var births_male = 0
 
-	for i in range(18, max_age):
+	for i in range(18, max_age + 1):
 		var potential = (
 			population_female[i] * female_birth_influence + population_male[i] * (1 - female_birth_influence)
 		)
@@ -206,6 +216,9 @@ func tick():
 	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
 	var clothedness = _wear_clothes()
 	_calculate_work()
+	if PrestigeData.is_upgrade_enabled(Enums.prestige_upgrades.REMOVE_RECREATION):
+		_generate_culture()
+
 	_calculate_births(satiety)
 	_calculate_deaths(satiety, clothedness)
 	calculate_population_total()
@@ -244,6 +257,7 @@ func save_game():
 		"old_work_exponential": old_work_exponential,
 		"young_work_exponential": young_work_exponential,
 		"start_working_age": start_working_age,
+		"max_population_this_run": max_population_this_run,
 	}
 
 
@@ -268,6 +282,7 @@ func load_game(data_dict):
 	old_work_exponential = data_dict["old_work_exponential"]
 	young_work_exponential = data_dict["young_work_exponential"]
 	start_working_age = int(data_dict["start_working_age"])
+	max_population_this_run = int(data_dict["max_population_this_run"])
 	recalculate_birth_rates()
 	recalculate_death_rates()
 	recalculate_work_rates()
@@ -275,4 +290,5 @@ func load_game(data_dict):
 
 
 func reset():
+	max_population_this_run = 0
 	_ready()

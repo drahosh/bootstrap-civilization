@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://cca28hrxnt475"]
+
+[ext_resource type="Script" uid="uid://bhxipvvkb2icl" path="res://prestige/prestige_tab.gd" id="1_s44v2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s44v2"]
+bg_color = Color(0, 0.200436, 0.318489, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.428423, 0.898115, 0.791348, 1)
+border_blend = true
+
+[node name="PrestigeTab" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_s44v2")
+script = ExtResource("1_s44v2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PointFormula" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "When you start over, you get prestige points equal to the formula:
+ (Max population) * 2^(number of completed ages)"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PointGain" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "Your maximum population from this run is 0 and you've completed 0 ages. This would grant you 0 prestige points."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PointPrediction" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "You currently have 0 prestige upgrade points. If you start again from the beginning now, you'd get 0 more prestige upgrade points. You need 0 more prestige points for the next prestige upgrade point. "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PrestigeButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Go back to your beginning and start over."

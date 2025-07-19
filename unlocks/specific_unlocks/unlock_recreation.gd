@@ -17,5 +17,8 @@ func unlock() -> void:
 
 
 func _ready() -> void:
+	if PrestigeData.prestige_upgrades[Enums.prestige_upgrades.REMOVE_RECREATION].enabled:
+		unlock_state = Enums.unlock_state.UNLOCKED
+		# setting this without using unlock function practically removes the unlock
 	description_1 = "Reach 500 population"
 	description_2 = "Recreation"

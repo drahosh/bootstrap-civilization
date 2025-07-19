@@ -32,6 +32,8 @@ func tick():
 		job.workforce_current = used_workforce
 		job.tick()
 		remaining_workforce -= used_workforce
+	if remaining_workforce > 0 and PrestigeData.is_upgrade_enabled(Enums.prestige_upgrades.REMOVE_RECREATION):
+		Resources.change_resources({Enums.resource_types.CULTURE: remaining_workforce * 0.01})
 
 
 func save_game():

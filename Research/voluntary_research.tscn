@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bo7l7pw5yhdb1"]
 
-[ext_resource type="Script" uid="uid://0lm46xpkf71f" path="res://Research/abstract_voluntary_research.gd" id="1_svsn8"]
+[ext_resource type="Script" uid="uid://0lm46xpkf71f" path="res://research/abstract_voluntary_research.gd" id="1_svsn8"]
 
 [node name="VoluntaryResearch" type="PanelContainer"]
 visible = false

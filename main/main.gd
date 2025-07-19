@@ -1,14 +1,15 @@
 extends Control
 
 static var year_seconds = 2.0
-@onready var population = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Population")
+@onready var population = $HSplitContainer/ScrollContainer/VBoxContainer/Population
 @onready var jobs = $HSplitContainer/Clickables/TabContainer/Jobs/ReorderableVBox
-@onready var resources = get_node("HSplitContainer/ScrollContainer/VBoxContainer/Resources")
-@onready var unlocks = get_node("HSplitContainer/Clickables/TabContainer/Unlocks")
-@onready var research = $LockedSections/Research
+@onready var resources = $HSplitContainer/ScrollContainer/VBoxContainer/Resources
+@onready var unlocks = $HSplitContainer/Clickables/TabContainer/Unlocks
+@onready var research = $LockedSections/Tech
 @onready var upgrades = $LockedSections/Upgrades
 @onready var timeControl = $TimeControl/TimeBar
 @onready var crises = $HSplitContainer/ScrollContainer/VBoxContainer/Crises
+@onready var prestigeTab = $LockedSections/Prestige
 static var time_since_last_save = 0.0
 static var save_interval_s = 15.0
 var last_timestamp = Time.get_unix_time_from_system()
@@ -16,13 +17,22 @@ var saved_time = 0.0  # time used for normal operation in between process ticks
 var turbo_time = 0.0  # time used for turbo
 var unlocked_sections = []
 
+signal trigger_prestige
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	jobs.set_population(population)
-	self.load_game()
+	if PrestigeData.prestige_points == 0:
+		# We have never prestiged, meaning we got here by starting the game, not after prestiging
+		self.load_game()
+	else:
+		soft_reset()  # need to delete some data that remained even after scene change, for example top bar
 	$HSplitContainer/ScrollContainer/VBoxContainer/HardResetButton.pressed.connect(hard_reset)
 	GlobalSignals.unlock_section.connect(unlock_section)
+	trigger_prestige.connect(_trigger_prestige)
+	prestigeTab.set_signal(trigger_prestige)
+	PrestigeData.apply_prestige_upgrades()
 
 
 func _tick():
@@ -35,6 +45,7 @@ func _tick():
 	resources.tick()
 	crises.tick()
 	timeControl.tick()
+	prestigeTab.queue_redraw()  # redraw needed while active
 
 
 func _add_turbo_time(_time):
@@ -89,6 +100,9 @@ func _process(_delta):
 	if time_since_last_save > save_interval_s:
 		time_since_last_save = 0
 		save_game()
+	if Population.population_total == 0:
+		# TODO make some popup
+		_trigger_prestige()
 
 
 func unlock_section(section: int):
@@ -99,6 +113,8 @@ func unlock_section(section: int):
 				upgrades.reparent($HSplitContainer/Clickables/TabContainer)
 			Enums.UnlockableSections.RESEARCH:
 				research.reparent($HSplitContainer/Clickables/TabContainer)
+			Enums.UnlockableSections.PRESTIGE:
+				prestigeTab.reparent($HSplitContainer/Clickables/TabContainer)
 
 
 func save_game():
@@ -115,6 +131,7 @@ func save_game():
 		"research": research.save_game(),
 		"crises": crises.save_game(),
 		"unlocked_sections": unlocked_sections,
+		"prestige": PrestigeData.save_game()
 	}
 	var save_file = FileAccess.open("user://bootstrapciv_savegame.save", FileAccess.WRITE)
 	var json_string = JSON.stringify(save_dict)
@@ -134,6 +151,7 @@ func load_game():
 		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
 		# TODO warn user, give them save file, pause until they click ok
 		return false
+	# TODO try loadding and on failure warn user and give them save file, and pause until they click ok
 	var data = json.data
 	last_timestamp = data["last_timestamp"]
 	timeControl.set_year(data["year"])
@@ -147,12 +165,16 @@ func load_game():
 	crises.load_game(data["crises"])
 	for section in data["unlocked_sections"]:
 		unlock_section(section)
+	PrestigeData.load_game(data["prestige"])
 	return true
 
 
 func soft_reset():
 	# Usually Prestige
-	unlocked_sections = []  # TODO keep prestige when implemented
+	unlocked_sections = []
+	if PrestigeData.prestige_points > 0:
+		# start with prestige tab open if you did it already
+		unlock_section(Enums.UnlockableSections.PRESTIGE)
 	upgrades.reset()
 	upgrades.reparent($LockedSections)
 	population.reset()
@@ -163,8 +185,10 @@ func soft_reset():
 	crises.reset()
 	upgrades.reparent($LockedSections)
 	research.reparent($LockedSections)
+	prestigeTab.reparent($LockedSections)
 	saved_time = 0
 	timeControl.set_year(1)
+	timeControl.change_age(Enums.ages.NOMADIC)
 
 
 func hard_reset():
@@ -176,3 +200,9 @@ func hard_reset():
 	turbo_time = 0
 	unlocked_sections = []
 	soft_reset()
+
+
+func _trigger_prestige():
+	save_game()
+	PrestigeData.prestige(Population.max_population_this_run, TopBar.age)
+	get_tree().change_scene_to_file("res://prestige/prestige_screen.tscn")

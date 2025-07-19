@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.4", "GL Compatibility")
 
 GlobalSignals="*res://utils/global_signals.gd"
 GlobalVariables="*res://utils/global_variables.gd"
+PrestigeData="*res://prestige/prestige_data.gd"
 
 [editor_plugins]
 

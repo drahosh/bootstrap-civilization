@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dk76a6xqsytv4"]
 
-[ext_resource type="Script" uid="uid://lcx8ui8pcv2k" path="res://Research/research_list.gd" id="1_4sals"]
+[ext_resource type="Script" uid="uid://lcx8ui8pcv2k" path="res://research/research_list.gd" id="1_4sals"]
 
 [node name="ResearchList" type="ScrollContainer"]
 anchors_preset = 15

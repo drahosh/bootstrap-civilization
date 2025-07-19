@@ -77,7 +77,7 @@ func _get_success_chance() -> int:
 
 func draw_description():
 	$VBoxContainer/HBoxContainer/Description.text = (
-		description + "\n" + "Success_chance: %s%%(%s%%)" % [_get_success_chance(), base_success_chance]
+		description + "\n" + "Success chance: %s%% (base: %s%%)" % [_get_success_chance(), base_success_chance]
 	)
 
 

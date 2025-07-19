@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4tom0nvycyaa"]
+
+[ext_resource type="PackedScene" uid="uid://biunfg2dcan6k" path="res://prestige/prestige_upgrades.tscn" id="1_irkpb"]
+[ext_resource type="Script" uid="uid://jfb1mfju7caw" path="res://prestige/prestige_screen.gd" id="1_mcdpk"]
+[ext_resource type="PackedScene" uid="uid://d2kutn8pqyfbp" path="res://prestige/prestige_automation.tscn" id="3_gxx5d"]
+
+[node name="PrestigeScreen" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_mcdpk")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="Upgrades" parent="TabContainer" instance=ExtResource("1_irkpb")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Upgrades"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Upgrades/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Filters" type="HBoxContainer" parent="TabContainer/Upgrades/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Upgrades/HBoxContainer/VBoxContainer/Filters"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Type:"
+
+[node name="OptionButton" type="OptionButton" parent="TabContainer/Upgrades/HBoxContainer/VBoxContainer/Filters"]
+layout_mode = 2
+size_flags_horizontal = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "All"
+popup/item_0/id = 0
+popup/item_1/text = "Upgrade"
+popup/item_1/id = 1
+popup/item_2/text = "Unlock"
+popup/item_2/id = 2
+popup/item_3/text = "Bootstrap"
+popup/item_3/id = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Upgrades/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UnselectedUpgrades" type="HFlowContainer" parent="TabContainer/Upgrades/HBoxContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Upgrades/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SelectedUpgrades" type="HFlowContainer" parent="TabContainer/Upgrades/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Tally" type="Label" parent="TabContainer/Upgrades"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Research" type="Label" parent="TabContainer"]
+visible = false
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+text = " Here you'll be able to see the list of researaches you've seen during game, their stats, and enable/disable them in advance before your next run.
+ TBD in future update."
+autowrap_mode = 2
+metadata/_tab_index = 1
+
+[node name="Automation" parent="TabContainer" instance=ExtResource("3_gxx5d")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+text = "Prestige"

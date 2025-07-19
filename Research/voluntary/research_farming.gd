@@ -22,3 +22,4 @@ func finish_success():
 		}
 	)
 	GlobalSignals.change_age.emit(Enums.ages.SETTLED)
+	GlobalSignals.unlock_section.emit(Enums.UnlockableSections.PRESTIGE)

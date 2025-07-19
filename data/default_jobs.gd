@@ -46,7 +46,16 @@ static func create_default_job(job: int) -> JobLine:
 			line.init(job, 10, {r.CULTURE: 0.1}, {}, {r.FOOD: 100, r.TOOLS: 10}, "Rest, Play, Make art", 1)
 		jobs.WOODCUTTING:
 			line.init(job, 10, {r.MATERIALS: 3}, {r.TOOLS: 1}, {r.TOOLS: 100}, "Cut wood", 5)
-
+		jobs.ARTMAKING:
+			line.init(
+				job,
+				10,
+				{r.CULTURE: 5, r.LUXURY: 1},
+				{r.TOOLS: 1, r.MATERIALS: 1, r.TEXTILES: 1},
+				{r.TOOLS: 100, r.CULTURE: 100},
+				"Make art",
+				10
+			)
 		_:
 			printerr("job number doesn't exist: " + str(job))
 	return line

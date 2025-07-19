@@ -73,6 +73,7 @@ static var unlock_name_to_class = {
 enum UnlockableSections {
 	UPGRADES,
 	RESEARCH,
+	PRESTIGE,
 }
 
 enum job_upgrade_types {
@@ -114,10 +115,21 @@ static var crisis_to_class = {
 	crises.COMPETITION: CrisisCompetition,
 }
 enum ages {
-	NOMADIC,
-	SETTLED,
+	# numbers are used for exponent prestige calculation
+	NOMADIC = 0,
+	SETTLED = 1,
 }
 static var age_names = {
 	ages.NOMADIC: "Nomadic",
 	ages.SETTLED: "Settled",
+}
+enum prestige_upgrade_type {
+	UPGRADE,
+	UNLOCK,
+	BOOTSTRAP,
+}
+enum prestige_upgrades {
+	REMOVE_RECREATION,
+	REDUCE_EXPANSION_SCALING,
+	UNLOCK_ARTMAKING,
 }

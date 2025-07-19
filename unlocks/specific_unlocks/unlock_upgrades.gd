@@ -4,7 +4,7 @@ class_name UnlockUpgrades
 
 
 func checkVisible() -> bool:
-	return Population.population_total >= 500
+	return Population.population_total >= 500 or Resources.resources[Enums.resource_types.CULTURE] >= 100
 
 
 func checkUnlock() -> bool:
