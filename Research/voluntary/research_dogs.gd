@@ -9,7 +9,7 @@ func _ready():
 	}
 	base_success_chance = 5
 	research_type = Enums.research_type.DOGS
-	description = "Domesticate dogs\n halve hunting capacity but double output per worker"
+	description = "Domesticate dogs\n halve hunting capacity but double output"
 	super._ready()
 
 

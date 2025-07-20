@@ -23,6 +23,13 @@ func _draw():
 	)
 
 
+func _ready():
+	$VBoxContainer/PrestigeButton.pressed.connect(prestige)
+
+
+func prestige():
+	trigger_prestige_signal.emit()
+
+
 func set_signal(s: Signal):
 	trigger_prestige_signal = s
-	$VBoxContainer/PrestigeButton.pressed.connect(func(): trigger_prestige_signal.emit())

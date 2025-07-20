@@ -16,7 +16,6 @@ func _ready():
 	super._ready()
 	self._setup()
 	GlobalSignals.unlock_job.connect(unlock_job)
-	pass  # Replace with function body.
 
 
 func set_population(population: Population):
@@ -55,6 +54,9 @@ func load_game(data_dict):
 
 
 func unlock_job(job: int):
+	for child in get_children():
+		if child.job_type == job:
+			return  # This job already exists
 	var line = DefaultJobs.create_default_job(job)
 	self.add_child(line)
 

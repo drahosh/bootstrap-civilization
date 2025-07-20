@@ -8,10 +8,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-current_tab = 4
+current_tab = 0
 
 [node name="You" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -37,7 +36,7 @@ metadata/_tab_index = 1
 [node name="RichTextLabel" type="RichTextLabel" parent="Resources"]
 layout_mode = 2
 text = "The beings you're influencing can accumulate things. 
-	Food - everyone person needs 1 per year. If they don't have enough, this increases their birth rate and death rate. By default, it decays at 10% per year.
+	Food - everyone  needs 1 per year. If they don't have enough, this reduces birth rate and increases death rate. By default, uneaeten food decays at rate of 10% per year. When spending food manually (when you click on something to immediately spend resources, counts even if it's triggered by automation), only half of the cost is really spent.
 	Clothes - Having them reduces death rate by up to 10%.  Each person uses one unit per year. Only 10% of clothes used are destroyed. 
 	Culture - immaterial resource representing the organisation of society. it naturally decays at the rate of 1% per year."
 
@@ -53,7 +52,7 @@ metadata/_tab_index = 2
 [node name="RichTextLabel" type="RichTextLabel" parent="Jobs"]
 layout_mode = 2
 text = "The people you control can do things. These are the things that produce and consume resources. 
-Jobs are filled by workforce from top to bottom. You can drag and drop them to reorder them. (You can also drag and drop tabs to reorder them, including the job tab, though this doesn't do anything)
+Jobs are filled by workforce from top to bottom. You can drag and drop them to reorder them. (You can also drag and drop tabs to reorder them, including the Jobs tab, though this doesn't do anything)
 You can also set maximum capacity percentage to be used.
 If you expand a job to size 10, you unlock capacity upgrades for that job. To unlock more upgrades, you need to research corresponding technologies.
 
@@ -74,6 +73,7 @@ text = "Capacity upgrade increases capacity by 20%
 Other upgrades TBD"
 
 [node name="Tech" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10

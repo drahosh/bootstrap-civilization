@@ -18,7 +18,7 @@ enum resource_types {
 static var resource_names = {
 	resource_types.FOOD: "Food",
 	resource_types.MATERIALS: "Materials",
-	resource_types.TEXTILES: "Textiles",
+	resource_types.TEXTILES: "Fabrics",
 	resource_types.METALS: "Metals",
 	resource_types.TOOLS: "Tools",
 	resource_types.CULTURE: "Culture",

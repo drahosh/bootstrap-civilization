@@ -40,7 +40,6 @@ func _draw():
 
 func tick():
 	if visible:
-		print(effect)
 		competition += 1
 		effect = max(0, effect - reduction_per_tick)
 		_draw()
@@ -52,10 +51,6 @@ func save_game():
 
 func load_game(data_dict):
 	competition = int(data_dict["competition"])
-	print(effect)
-	print(reduction_per_tick * competition)
-	print(1 - reduction_per_tick * competition)
 	effect = max(0, 1 - reduction_per_tick * competition)
-	print(effect)
 	ongoing = data_dict["ongoing"]
 	toggle_visible()
