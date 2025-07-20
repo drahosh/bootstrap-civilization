@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cwtw7os80cgu0"]
+[gd_scene load_steps=12 format=3 uid="uid://cwtw7os80cgu0"]
 
 [ext_resource type="Script" uid="uid://cvh7nlky6ub0x" path="res://main/main.gd" id="1_c651c"]
 [ext_resource type="PackedScene" uid="uid://dveaek1dp15vd" path="res://main/resources.tscn" id="2_3wy1v"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cs4ajdiks7qka" path="res://crises/crises.tscn" id="6_grrlh"]
 [ext_resource type="PackedScene" uid="uid://c18e0ly2b3ok3" path="res://upgrades/upgrades.tscn" id="6_kfbq2"]
 [ext_resource type="PackedScene" uid="uid://dk76a6xqsytv4" path="res://research/research_list.tscn" id="7_4dugh"]
+[ext_resource type="PackedScene" uid="uid://dgkftjh4cb68f" path="res://main/info_tab.tscn" id="11_bsumw"]
 
 [node name="Node2D" type="VBoxContainer"]
 anchors_preset = 15
@@ -107,3 +108,8 @@ metadata/_tab_index = 0
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="Info" parent="HSplitContainer/Clickables/TabContainer" instance=ExtResource("11_bsumw")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2

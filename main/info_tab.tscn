@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://dgkftjh4cb68f"]
+
+[node name="InfoTab" type="TabContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 4
+
+[node name="You" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="You"]
+layout_mode = 2
+text = "Your conciousness begins.
+ You don't know what you are. You can sense, though you don't know how, some people. 
+You realize you can influence them. You realize you are in them. Multiply them to increase your power."
+
+[node name="Resources" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Resources"]
+layout_mode = 2
+text = "The beings you're influencing can accumulate things. 
+	Food - everyone person needs 1 per year. If they don't have enough, this increases their birth rate and death rate. By default, it decays at 10% per year.
+	Clothes - Having them reduces death rate by up to 10%.  Each person uses one unit per year. Only 10% of clothes used are destroyed. 
+	Culture - immaterial resource representing the organisation of society. it naturally decays at the rate of 1% per year."
+
+[node name="Jobs" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Jobs"]
+layout_mode = 2
+text = "The people you control can do things. These are the things that produce and consume resources. 
+Jobs are filled by workforce from top to bottom. You can drag and drop them to reorder them. (You can also drag and drop tabs to reorder them, including the job tab, though this doesn't do anything)
+You can also set maximum capacity percentage to be used.
+If you expand a job to size 10, you unlock capacity upgrades for that job. To unlock more upgrades, you need to research corresponding technologies.
+
+Jobs can have multipliers to capacity, input and output. These multipliers apply multiplicatively, meaning if a job has 3 upgrades, one increasing capacity by 10%, one by 20%, and one reducing it by 10%, the final capacity multiplier will be 1.1*1.2*0.9=1.188, increasing capacity by 18.8%"
+
+[node name="Upgrades" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Upgrades"]
+layout_mode = 2
+text = "Capacity upgrade increases capacity by 20%
+Other upgrades TBD"
+
+[node name="Tech" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Tech"]
+layout_mode = 2
+text = "You can teach your charges some new technology.
+If you enable the technology, they will spend resources over time, up to 10% of their amount per year, on this technology. If all resources are paid, they will attempt to learn it.
+ However, your success is not certain. If learning the technology fails, its costs are doubled, and its success chance increases by its base success chance.
+The increase in success chance remains through prestiges. The increase in cost does not."
+
+[node name="Prestige" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Prestige"]
+layout_mode = 2
+text = "This word means learning from this attempt and time-travelling to start again.
+You have limited capacity for knowledge to send back to yourself, so you need to chose carefully."
