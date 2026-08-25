@@ -12,4 +12,5 @@ var job_upgrade_scale = 1.5
 
 # RESEARCH
 var research_scale = 2
+var research_delay_scale = 1.5
 var research_input_ratio = 0.05

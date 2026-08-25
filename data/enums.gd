@@ -84,14 +84,19 @@ enum job_upgrade_types {
 }
 
 enum research_type {
-	# need to keep them in order, so using multiples of 10 to make room in between
+	# need to keep them with stable ids, so using multiples of 10 to make room in between
+	# Also keeping them in order from lowest to highest (otherwise would have to sort in research list)
 	# Posive are voluntary, negative are tempting
+	WARRIORS = -20,
+	RELIGION = -10,
 	WOODCUTTING = 10,
 	FIBERS = 20,
 	BONES = 30,
 	DOGS = 40,
 	BIRDS = 50,
 	FARMING = 60,
+	CATS = 70,
+	GRANARY = 80,
 }
 static var research_type_to_class = {
 	research_type.WOODCUTTING: ResearchWoodcutting,
@@ -100,6 +105,10 @@ static var research_type_to_class = {
 	research_type.DOGS: ResearchDogs,
 	research_type.BIRDS: ResearchBirds,
 	research_type.FARMING: ResearchFarming,
+	research_type.CATS: ResearchCats,
+	research_type.GRANARY: ResearchGranary,
+	research_type.RELIGION: CResearchReligion,
+	research_type.WARRIORS: CResearchWarriors,
 }
 enum research_job_changes {
 	CHANGE_OUTPUT,

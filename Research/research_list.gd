@@ -10,6 +10,7 @@ extends ScrollContainer
 ################
 
 var voluntary_scene = preload("res://Research/voluntary_research.tscn")
+var compulsory_scene = preload("res://research/compulsory_research.tscn")
 
 
 func tick():
@@ -55,14 +56,14 @@ func _ready():
 	# They start as invisible
 	# TODO make sure it doesn't ruin performance
 	for research_type in Enums.research_type.values():
+		var script = Enums.research_type_to_class[research_type]
+		var instance
 		if research_type < 0:
-			#TODO tempting research
-			pass
+			instance = compulsory_scene.instantiate()
 		if research_type > 0:
-			var script = Enums.research_type_to_class[research_type]
-			var instance = voluntary_scene.instantiate()
-			instance.set_script(script)
-			$VBoxContainer.add_child(instance)
+			instance = voluntary_scene.instantiate()
+		instance.set_script(script)
+		$VBoxContainer.add_child(instance)
 
 
 func reset():

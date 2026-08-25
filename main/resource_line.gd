@@ -25,7 +25,10 @@ func redraw():
 
 func redraw_resource():
 	# separated for separate use by resources.gd
-	get_node("CenterContainer2/ResourceAmount").text = str(resources.resources[resource_key])
+	var text = str(snapped(resources.resources[resource_key], 0.1))
+	if resource_key in resources.resource_capacities:
+		text += " / %s" % resources.resource_capacities[resource_key]
+	get_node("CenterContainer2/ResourceAmount").text = text
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

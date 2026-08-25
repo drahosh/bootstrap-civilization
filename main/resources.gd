@@ -6,6 +6,7 @@ static var resources: Dictionary = {}  # map of resource name to amount
 static var resource_changes: Dictionary = {}  # map of changes from last tick. Is reset to 0 at start of tick, then increased or decreased during processing
 var visible_resources = []  # list of resources shown in UI
 var resource_capacities = {}  # nonperishable capacity for perishable resources
+static var granary_enabled = false
 
 
 func _setup():
@@ -47,6 +48,8 @@ func _ready():
 
 
 func process_perishables():
+	if granary_enabled:
+		resource_capacities[Enums.resource_types.FOOD] = Population.max_population_this_run * 7
 	for resource_type in Enums.perishable_resources:
 		var perishable = resources[resource_type] - resource_capacities[resource_type]
 		change_resources({resource_type: -perishable * Enums.perishable_resources[resource_type]})
@@ -93,6 +96,7 @@ func save_game():
 		"resources": resources,
 		"resource_changes": resource_changes,
 		"visible_resources": visible_resources,
+		"granary_enabled": granary_enabled,
 	}
 
 
@@ -107,6 +111,7 @@ func load_game(dict):
 	visible_resources = []
 	for value in dict["visible_resources"]:
 		visible_resources.append(int(value))
+	granary_enabled = dict["granary_enabled"]
 	redraw_resource_list()
 
 

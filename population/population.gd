@@ -2,46 +2,50 @@ extends VBoxContainer
 
 class_name Population
 
-const Enums = preload("res://data/enums.gd")
 #maximum age of living population, extends graph
 const DEFAULT_MAX_AGE = 60
 var max_age = DEFAULT_MAX_AGE
-# Called when the node enters the scene tree for the first time.
+####################################################
+# specific vars for the social class
 var death_rates: Array
 var birth_rates: Array
 var work_rates: Array
-static var population_male: Array
-static var population_female: Array
+var population_male: Array
+var population_female: Array
 var workforce_total: int
 var population_change: int = 0
 var workforce_change: int = 0
+var population_total: int
+# requires specific setup
+var social_class: int
+var social_class_tags = []
+var luxury_consumption: float = 0.0
+####################################################
+# Static vars
 # Death rate stats
-var zero_death_rate = 0.5
-var juvenile_death_rate = 0.06
-var adult_death_rate = 0.02
-var elder_cutoff = 40  #also counts as birth rate stat
-var age_death_rate_exponential = 1.2
+static var zero_death_rate = 0.5
+static var juvenile_death_rate = 0.06
+static var adult_death_rate = 0.02
+static var elder_cutoff = 40  #also counts as birth rate stat
+static var age_death_rate_exponential = 1.2
 
 # birth rate stats
-var adult_birth_rate = 0.3
-var age_birth_rate_exponential = 0.8
-var female_birth_influence = 0.  # this * female pop + (1-this) * male pop is base for reproduction
+static var adult_birth_rate = 0.3
+static var age_birth_rate_exponential = 0.9
+static var female_birth_influence = 0.9  # this * female pop + (1-this) * male pop is base for reproduction
 # workforce rate stats
 
-var adult_work_rate = 1.0
-var female_work_multiplier = 0.9
-var male_work_multiplier = 1.1
-var old_work_exponential = 0.95
-var young_work_exponential = 0.9
-var start_working_age = 8
-static var population_total: int
-static var max_population_this_run: int = 0
+static var adult_work_rate = 1.0
+static var female_work_multiplier = 0.9
+static var male_work_multiplier = 1.1
+static var old_work_exponential = 0.95
+static var young_work_exponential = 0.9
+static var start_working_age = 8
 
 
-static func calculate_population_total():
+func calculate_population_total():
 	# needs to be called after population changes in tick
 	population_total = Utils.sum_array(population_male) + Utils.sum_array(population_female)
-	max_population_this_run = max(max_population_this_run, population_total)
 
 
 func add_death_rate():
@@ -100,9 +104,6 @@ func _setup_population():
 	population_female.resize(max_age + 1)
 	population_male.fill(0)
 	population_female.fill(0)
-	for i in range(30):
-		population_female[i] = 1
-		population_male[i] = 1
 	calculate_population_total()
 
 
@@ -129,30 +130,6 @@ func _increase_age():
 				birth_rates.pop_back()
 				death_rates.pop_back()
 				work_rates.pop_back()
-
-
-func _eat_food():
-	# eats food (decreases the static resource), returns proportion of desired consumption that was sated
-	var desired_consumption = population_total
-	var food = Resources.resources[Enums.resource_types.FOOD]
-	if food >= desired_consumption:
-		Resources.change_resources({Enums.resource_types.FOOD: -desired_consumption})
-		return 1
-	else:
-		Resources.change_resources({Enums.resource_types.FOOD: -food})
-		return float(food) / desired_consumption
-
-
-func _wear_clothes() -> float:
-	var desired_clothes = population_total
-	var clothes = Resources.resources[Enums.resource_types.CLOTHES]
-	var clothes_damage_factor = 0.1
-	if clothes >= desired_clothes:
-		Resources.change_resources({Enums.resource_types.CLOTHES: -desired_clothes * clothes_damage_factor})
-		return 1
-	else:
-		Resources.change_resources({Enums.resource_types.CLOTHES: -clothes * clothes_damage_factor})
-		return float(clothes) / desired_clothes
 
 
 func _calculate_work():
@@ -210,10 +187,21 @@ func _redraw_ui():
 	get_node("Label").text = "Population:%s\nBase workforce:%s" % [population_total, workforce_total]
 
 
-func tick():
+func _wear_clothes() -> float:
+	var desired_clothes = population_total
+	var clothes = Resources.resources[Enums.resource_types.CLOTHES]
+	var clothes_damage_factor = 0.1
+	if clothes >= desired_clothes:
+		Resources.change_resources({Enums.resource_types.CLOTHES: -desired_clothes * clothes_damage_factor})
+		return 1
+	else:
+		Resources.change_resources({Enums.resource_types.CLOTHES: -clothes * clothes_damage_factor})
+		return float(clothes) / desired_clothes
+
+
+func tick(satiety):
 	var old_population = population_total
 	_increase_age()
-	var satiety = _eat_food()  # 1 means everyone has more than enough food, 0 means total starvation
 	var clothedness = _wear_clothes()
 	_calculate_work()
 	if PrestigeData.is_upgrade_enabled(Enums.prestige_upgrades.REMOVE_RECREATION):
@@ -282,7 +270,6 @@ func load_game(data_dict):
 	old_work_exponential = data_dict["old_work_exponential"]
 	young_work_exponential = data_dict["young_work_exponential"]
 	start_working_age = int(data_dict["start_working_age"])
-	max_population_this_run = int(data_dict["max_population_this_run"])
 	recalculate_birth_rates()
 	recalculate_death_rates()
 	recalculate_work_rates()

@@ -27,7 +27,7 @@ func _ready():
 		# We have never prestiged, meaning we got here by starting the game, not after prestiging
 		load_game()
 	else:
-		soft_reset()  # need to delete some data that remained even after scene change, for example top bar
+		soft_reset()  # need to delete static data that remained even after scene change, for example top bar
 		load_after_prestige()
 	$HSplitContainer/ScrollContainer/VBoxContainer/HardResetButton.pressed.connect(hard_reset)
 	GlobalSignals.unlock_section.connect(unlock_section)
@@ -202,6 +202,7 @@ func hard_reset():
 	year_seconds = 2
 	turbo_time = 0
 	unlocked_sections = []
+	GlobalVariables.job_expand_scale = 1.3
 	soft_reset()
 	prestigeTab.reparent($LockedSections)
 
